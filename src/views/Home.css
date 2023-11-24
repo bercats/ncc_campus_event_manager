@@ -1,0 +1,71 @@
+/* Home.css */
+.home {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 150px;
+    background-color: #333;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-item i {
+    margin-bottom: 5px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-bar {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-bar h1 {
+    margin: 0;
+}
+
+.admin-signout {
+    display: flex;
+}
+
+button {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.main-container {
+    /* Add your main container styles here */
+    background-color: #f5f5f5; /* Change to the desired background color */
+    padding: 20px;
+    border-radius: 5px;
+    flex: 1;
+}
+
