@@ -1,0 +1,109 @@
+{
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.8.2\",\"stackType\":\"auth-Cognito-UserPool-Groups\",\"metadata\":{}}",
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "env": {
+      "Type": "String"
+    },
+    "AuthRoleArn": {
+      "Type": "String"
+    },
+    "UnauthRoleArn": {
+      "Type": "String"
+    },
+    "authmyeventplannerAuthUserPoolId": {
+      "Type": "String",
+      "Default": "authmyeventplannerAuthUserPoolId"
+    },
+    "authmyeventplannerAuthIdentityPoolId": {
+      "Type": "String",
+      "Default": "authmyeventplannerAuthIdentityPoolId"
+    },
+    "authmyeventplannerAuthAppClientID": {
+      "Type": "String",
+      "Default": "authmyeventplannerAuthAppClientID"
+    },
+    "authmyeventplannerAuthAppClientIDWeb": {
+      "Type": "String",
+      "Default": "authmyeventplannerAuthAppClientIDWeb"
+    }
+  },
+  "Conditions": {
+    "ShouldNotCreateEnvResources": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "NONE"
+      ]
+    }
+  },
+  "Resources": {
+    "adminsGroup": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "authmyeventplannerAuthUserPoolId"
+        },
+        "Description": "override success",
+        "GroupName": "admins",
+        "Precedence": 1,
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "adminsGroupRole",
+            "Arn"
+          ]
+        }
+      }
+    },
+    "adminsGroupRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "",
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              },
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "authmyeventplannerAuthIdentityPoolId"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              }
+            }
+          ]
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "authmyeventplannerAuthUserPoolId"
+              },
+              "-adminsGroupRole"
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "adminsGroupRole": {
+      "Value": {
+        "Fn::GetAtt": [
+          "adminsGroupRole",
+          "Arn"
+        ]
+      }
+    }
+  }
+}
