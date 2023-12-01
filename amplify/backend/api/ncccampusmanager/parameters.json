@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "ncccampusmanager",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authmyeventplannerAuth",
+      "Outputs.UserPoolId"
+    ]
+  },
+  "AuthModeLastUpdated": "2023-12-01T00:15:34.597Z"
+}

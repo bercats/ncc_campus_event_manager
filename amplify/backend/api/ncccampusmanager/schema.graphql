@@ -1,0 +1,29 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+# input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+
+type User @model  @auth(rules: [{allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {
+  studentId: ID!
+  name: String!
+  surname: String
+  METUmail: String!
+  yoS: String  # year of study
+}
+
+type admin @model @auth(rules: [{allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {
+  adminId: ID!
+  username: String!
+}
+
+type Event @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {           
+  eventId: ID! 
+  timeAndDate: AWSDateTime!
+  eventName: String! 
+  eventPoster: String
+  place: String!
+  price: Float
+  capacity: Int
+  eventPlanner: String!
+  description: String
+}
