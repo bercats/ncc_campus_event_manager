@@ -1,5 +1,5 @@
 {
-  "Description": "Root Stack for AWS Amplify CLI",
+  "Description": "Root Stack for AWS Amplify Console",
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "DeploymentBucketName": {
@@ -252,6 +252,59 @@
           },
           "breakCircularDependency": true,
           "dependsOn": "",
+          "env": "dev"
+        }
+      }
+    },
+    "apincccampusmanager": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "Parameters": {
+          "AppSyncApiName": "ncccampusmanager",
+          "DynamoDBBillingMode": "PAY_PER_REQUEST",
+          "DynamoDBEnableServerSideEncryption": false,
+          "AuthCognitoUserPoolId": {
+            "Fn::GetAtt": [
+              "authmyeventplannerAuth",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "S3DeploymentBucket": "amplify-ncccampusmanager-dev-175636-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/f08c5fb7f58518c6f65b21d37ffe93970b0d1fbd",
+          "env": "dev"
+        }
+      }
+    },
+    "storagePosters": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "Parameters": {
+          "bucketName": "ncccampuseventmanagerbucket",
+          "selectedGuestPermissions": "",
+          "selectedAuthenticatedPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket",
+          "unauthRoleName": {
+            "Ref": "UnauthRoleName"
+          },
+          "authRoleName": {
+            "Ref": "AuthRoleName"
+          },
+          "s3PrivatePolicy": "Private_policy_525c79bf",
+          "s3ProtectedPolicy": "Protected_policy_525c79bf",
+          "s3PublicPolicy": "Public_policy_525c79bf",
+          "s3ReadPolicy": "read_policy_525c79bf",
+          "s3UploadsPolicy": "Uploads_policy_525c79bf",
+          "authPolicyName": "s3_amplify_525c79bf",
+          "unauthPolicyName": "s3_amplify_525c79bf",
+          "AuthenticatedAllowList": "ALLOW",
+          "GuestAllowList": "DISALLOW",
+          "s3PermissionsAuthenticatedPrivate": "s3:PutObject,s3:GetObject",
+          "s3PermissionsAuthenticatedProtected": "s3:PutObject,s3:GetObject",
+          "s3PermissionsAuthenticatedPublic": "s3:PutObject,s3:GetObject",
+          "s3PermissionsAuthenticatedUploads": "s3:PutObject",
+          "s3PermissionsGuestPublic": "DISALLOW",
+          "s3PermissionsGuestUploads": "DISALLOW",
           "env": "dev"
         }
       }

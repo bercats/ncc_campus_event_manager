@@ -1,0 +1,12 @@
+{
+  "resourceName": "Posters",
+  "policyUUID": "525c79bf",
+  "bucketName": "ncccampuseventmanagerbucket",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "triggerFunction": "NONE"
+}

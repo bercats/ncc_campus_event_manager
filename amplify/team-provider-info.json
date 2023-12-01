@@ -15,6 +15,12 @@
       "auth": {
         "myeventplannerAuth": {},
         "userPoolGroups": {}
+      },
+      "api": {
+        "ncccampusmanager": {}
+      },
+      "storage": {
+        "Posters": {}
       }
     }
   }
