@@ -11,7 +11,7 @@ type User @model  @auth(rules: [{allow: groups, groups: ["admins"], operations: 
   yoS: String  # year of study
 }
 
-type admin @model @auth(rules: [{allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {
+type Admin @model @auth(rules: [{allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {
   adminId: ID!
   username: String!
 }
