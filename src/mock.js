@@ -1,86 +1,137 @@
-import { API, Auth, graphqlOperation } from "aws-amplify";
-import {
-    createUser,
-    createAdmin,
-    createEvent,
-    updateUser,
-    updateEvent,
-    updateAdmin,
-    deleteUser,
-    deleteEvent,
-    deleteAdmin,
-} from "./graphql/mutations";
-import { listEvents, listUsers, listAdmins } from "./graphql/queries";
+// mock.js
 
+import { API, graphqlOperation } from 'aws-amplify';
+import { createEvent, createAdmin, createUser} from './graphql/mutations';
+import { listEvents, listUsers, listAdmins } from './graphql/queries';
+// Function to delete all records
 export const deleteAllRecords = async () => {
-    console.log("Attempting to delete all events");
-    const events = await API.graphql(graphqlOperation(listEvents));
-    const event_ids = events.data.listEvents.items.map((event) => event.id);
-    await Promise.all(
-        event_ids.map(async (id) => {
-            return API.graphql(graphqlOperation(deleteEvent, { input: { id } }));
-        })
-    );
-    console.log("All events deleted");
-};
-
-export const addMockRecords = async () => {
-    const userInfo = await Auth.currentAuthenticatedUser();
-    const signedin_student_id = userInfo.attributes.sub;
-    const names = [
-        "Chess Club",
-        "Debate Club",
-        "Photography Society",
-        "Student Newspaper",
-        "Model UN",
-        "Film Club",
-        "Creative Writing Society",
-        "LGBTQI+ Alliance",
-        "Engineering Club",
-        "Dance Team",
-    ];
-
     try {
-        for (let i = -5; i < 5; i++) {
-            // Some events are in the past, some are in the future (for testing purposes)
-            const event_datetime_start = new Date();
-            event_datetime_start.setDate(event_datetime_start.getDate() + i);
-            const event_datetime_end = new Date(event_datetime_start);
-            event_datetime_start.setHours(17);
-            event_datetime_start.setMinutes(0);
-            event_datetime_start.setSeconds(0);
-            event_datetime_start.setMilliseconds(0);
+        // Delete all events
+        const eventsResult = await API.graphql(graphqlOperation(listEvents));
+        const eventsToDelete = eventsResult.data.listEvents.items;
+        await Promise.all(
+            eventsToDelete.map(async (event) => {
+                await API.graphql(graphqlOperation(deleteEvent, { input: { id: event.id } }));
+            })
+        );
 
-            event_datetime_end.setHours(19);
-            event_datetime_end.setMinutes(0);
-            event_datetime_end.setSeconds(0);
-            event_datetime_end.setMilliseconds(0);
+        // Delete all users
+        const usersResult = await API.graphql(graphqlOperation(listUsers));
+        const usersToDelete = usersResult.data.listUsers.items;
+        await Promise.all(
+            usersToDelete.map(async (user) => {
+                await API.graphql(graphqlOperation(deleteUser, { input: { id: user.id } }));
+            })
+        );
 
-            const randomClub = getRandomIndex(names.length);
+        // Delete all admins
+        const adminsResult = await API.graphql(graphqlOperation(listAdmins));
+        const adminsToDelete = adminsResult.data.listAdmins.items;
+        await Promise.all(
+            adminsToDelete.map(async (admin) => {
+                await API.graphql(graphqlOperation(deleteAdmin, { input: { id: admin.id } }));
+            })
+        );
 
-            const response = await API.graphql({
-                query: createEvent,
-                variables: {
-                    input: {
-                        name: names[randomClub],
-                        description: "All welcome at our events",
-                        event_owner: signedin_student_id,
-                        // image_file_name: storage_key.key,
-                        event_datetime_start: event_datetime_start.toISOString(),
-                        event_datetime_end: event_datetime_end.toISOString(),
-                        event_duration: 2,
-                        total_tickets: getRandomIndex(25) + 25,
-                        tickets: [{ student_id: signedin_student_id }], // the creator gets the first ticket
-                    },
-                },
-            });
-            console.log("Response: ", response.data.createEvent);
-        }
-    } catch (err) {
-        console.log("Error: ", err);
+        console.log('All records deleted successfully.');
+    } catch (error) {
+        console.error('Error deleting records:', error);
     }
 };
 
-function getRandomIndex(maxIndex) {
-    return Math.floor(Math.random() * maxIndex);
-}
+// Function to add mock records
+export const addMockRecords = async () => {
+    try {
+        // Add mock events
+        const mockEvent1 = {
+            input: {
+                // Add mock event data
+                timeAndDate: new Date().toISOString(),
+                eventName: 'Mock Event 1',
+                // ... other event fields
+            }
+        };
+        await API.graphql(graphqlOperation(createEvent, mockEvent1));
+
+        const mockEvent2 = {
+            input: {
+                // Add mock event data
+                timeAndDate: new Date().toISOString(),
+                eventName: 'Mock Event 2',
+                // ... other event fields
+            }
+        };
+        await API.graphql(graphqlOperation(createEvent, mockEvent2));
+
+        // Add mock admins
+        const mockAdmin1 = {
+            input: {
+                // Add mock admin data
+                username: 'mock_admin_1',
+                // ... other admin fields
+            }
+        };
+        await API.graphql(graphqlOperation(createAdmin, mockAdmin1));
+
+        // Add mock users
+        const mockUser1 = {
+            input: {
+                // Add mock user data
+                name: 'Mock User 1',
+                // ... other user fields
+            }
+        };
+        await API.graphql(graphqlOperation(createUser, mockUser1));
+
+        console.log('Mock records added successfully.');
+    } catch (error) {
+        console.error('Error adding mock records:', error);
+    }
+};
+
+
+// GraphQL query to list events
+export const listMockEvents = async () => {
+    try {
+        // Mock data for events
+        const mockEvents = [
+            {
+                eventId: '1',
+                timeAndDate: '2023-12-31T12:00:00Z',
+                eventName: 'Mock Event 1',
+                eventPoster: 'mock-event-1.jpg',
+                place: 'Mock Venue 1',
+                price: 10,
+                capacity: 100,
+                eventPlanner: 'Mock Planner 1',
+                description: 'This is a mock event description.',
+                id: 'mock-event-1-id',
+                createdAt: '2023-01-01T00:00:00Z',
+                updatedAt: '2023-01-01T00:00:00Z',
+                __typename: 'Event',
+            },
+            {
+                eventId: '2',
+                timeAndDate: '2023-12-31T15:00:00Z',
+                eventName: 'Mock Event 2',
+                eventPoster: 'mock-event-2.jpg',
+                place: 'Mock Venue 2',
+                price: 20,
+                capacity: 150,
+                eventPlanner: 'Mock Planner 2',
+                description: 'This is another mock event description.',
+                id: 'mock-event-2-id',
+                createdAt: '2023-01-02T00:00:00Z',
+                updatedAt: '2023-01-02T00:00:00Z',
+                __typename: 'Event',
+            },
+        ];
+
+        // Return the mock events
+        return mockEvents;
+    } catch (error) {
+        console.error('Error listing mock events:', error);
+        return [];
+    }
+};
+

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
 import { listEvents} from "../graphql/queries";
+import { listMockEvents } from '../mock';
 import EventCard from "../ui-components/EventCard";
 import './Home.css';
 import { deleteAllRecords, addMockRecords } from "../mock.js"
@@ -42,6 +43,7 @@ const Home = () => {
                 if (groups && groups.includes('admins')) {
                     setIsAdmin(true);
                 }
+                console.log('User is admin:', isAdmin);
             } catch (err) {
                 console.log('Error', err);
             }
@@ -76,14 +78,16 @@ const Home = () => {
               filter: { event_datetime_start: { gt: new Date().toISOString(), }, }, }));
         
             let events = results.data.listEvents.items;
-        
-            events.sort((a, b) => {
+            const mockEvents = await listMockEvents();
+            console.log('Mock Events:', mockEvents);
+            mockEvents.sort((a, b) => {
               const astart = new Date(a.event_datetime_start);
               const bstart = new Date(b.event_datetime_start);
               return astart - bstart;
             });
         
-            setEvents(events);
+            setEvents(mockEvents);
+            console.log('Updated Events State:', events);
         
             await getSecureImageUrls();
             
