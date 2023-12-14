@@ -38,12 +38,11 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2023-12-07T12:46:32.089Z",
+      "lastPushTimeStamp": "2023-12-14T00:47:12.537Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apincccampusmanager"
-      },
-      "lastPushDirHash": "c8iHM4L6eqeii4X4yWGyYFvcFyk="
+      }
     }
   },
   "auth": {
@@ -81,12 +80,11 @@
         "IdentityPoolName": "myeventplannerIdentityPool__dev",
         "UserPoolName": "myeventplannerUserPool"
       },
-      "lastPushTimeStamp": "2023-12-07T12:46:25.060Z",
+      "lastPushTimeStamp": "2023-12-14T00:47:12.539Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/auth/myeventplannerAuth-cloudformation-template.json",
         "logicalId": "authmyeventplannerAuth"
-      },
-      "lastPushDirHash": "9kTmQ9zYvvbrcbkcbqpnYRUDTvU="
+      }
     },
     "userPoolGroups": {
       "dependsOn": [
@@ -106,7 +104,7 @@
       "output": {
         "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_4nYAHFO8U-adminsGroupRole"
       },
-      "lastPushTimeStamp": "2023-12-07T12:46:25.069Z",
+      "lastPushTimeStamp": "2023-12-14T00:47:18.051Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "logicalId": "authuserPoolGroups"
@@ -122,12 +120,11 @@
         "BucketName": "ncccampuseventmanagerbucket175636-dev",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2023-12-07T12:46:25.078Z",
+      "lastPushTimeStamp": "2023-12-14T00:47:18.148Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storagePosters"
-      },
-      "lastPushDirHash": "Hpe1WV5r0tkhPBpLv/dEaIWYnT8="
+      }
     }
   }
 }

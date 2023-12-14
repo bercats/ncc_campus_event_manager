@@ -1,6 +1,8 @@
 // Home.js
 import React, { useEffect, useState } from 'react';
-import { Auth } from 'aws-amplify';
+import { Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
+import { listEvents, getRoom } from "../graphql/queries";
+import EventCard from "../ui-components/EventCard";
 import './Home.css';
 import { deleteAllRecords, addMockRecords } from "../mock.js"
 const menuItems = [
@@ -30,6 +32,7 @@ const Home = () => {
     const [currentEventsView, setCurrentEventsView] = useState('All Upcoming Events');
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminDialog, setAdminDialog] = useState(false);
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -65,8 +68,31 @@ const Home = () => {
         }
     };
 
-    const showAllUpcomingEvents = () => {
+    const showAllUpcomingEvents = async () => {
         setCurrentEventsView('All Upcoming Events');
+        
+        try {
+            const results = await API.graphql(graphqlOperation(listEvents, {
+              filter: { event_datetime_start: { gt: new Date().toISOString(), }, }, }));
+        
+            let events = results.data.listEvents.items;
+        
+            events.sort((a, b) => {
+              const astart = new Date(a.event_datetime_start);
+              const bstart = new Date(b.event_datetime_start);
+              return astart - bstart;
+            });
+        
+            setEvents(events);
+        
+            // Get room names data (in a later step)
+            // Get secure image urls (in a later step)
+            await getSecureImageUrls();
+            
+        
+          } catch(err) {
+            console.log("Error retrieving events: ", err)
+          }
     };
 
     const showAllPastEvents = () => {
@@ -104,6 +130,32 @@ const Home = () => {
         // Call the adminTools function
         adminTools();
     };
+    
+    const getSecureImageUrls = async (events) => { // Modify function signature
+        const updatedEvents = await Promise.all(
+            events.map(async (event) => {
+                event.url = ""; // add the url field to the event
+                if (event.image_file_name) {
+                    try {
+                        const preSignedImageURL = await Storage.get(event.image_file_name, {
+                            level: "protected",               // defaults to `public`
+                            identityId: event.student_id,     // id of another user, if `level: protected`
+                            download: false,                  // defaults to false
+                            contentType: "image/*",           // set return content type, eg "text/html"
+                        });
+                        console.log("Url: ", preSignedImageURL);
+                        event.url = preSignedImageURL;
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
+                return event;
+            })
+        );
+
+        return updatedEvents; // Return the updated events
+    };
+
 
     return (
         <div className="home">
@@ -128,6 +180,11 @@ const Home = () => {
                 </div>
                 <div className="main-container">
                     {/* This is where events will appear */}
+                    {events.map(event => (
+                        <div key={event.id}>
+                            <EventCard event={event} />
+                        </div>
+                    ))}
                 </div>
             </div>
 
