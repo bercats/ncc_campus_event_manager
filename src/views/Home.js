@@ -1,7 +1,7 @@
 // Home.js
 import React, { useEffect, useState } from 'react';
 import { Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
-import { listEvents, getRoom } from "../graphql/queries";
+import { listEvents} from "../graphql/queries";
 import EventCard from "../ui-components/EventCard";
 import './Home.css';
 import { deleteAllRecords, addMockRecords } from "../mock.js"
@@ -85,8 +85,6 @@ const Home = () => {
         
             setEvents(events);
         
-            // Get room names data (in a later step)
-            // Get secure image urls (in a later step)
             await getSecureImageUrls();
             
         
