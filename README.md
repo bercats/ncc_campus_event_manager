@@ -1,5 +1,5 @@
 # NCC Campus Event Manager
-This is our term project for the CNG 445 Cloud Computing Course 
+This is our term project for the CNG 495 Cloud Computing Course 
 Main purpose of our app is to have an event manager for our campus where, different club activites, paries, seminars are shown to
 the students of our campus.
 
