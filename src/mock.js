@@ -1,8 +1,9 @@
 // mock.js
 
 import { API, graphqlOperation } from 'aws-amplify';
-import { createEvent, createAdmin, createUser} from './graphql/mutations';
+import { createEvent, createAdmin, createUser, deleteEvent, deleteAdmin, deleteUser } from './graphql/mutations';
 import { listEvents, listUsers, listAdmins } from './graphql/queries';
+
 export const deleteAllRecords = async () => {
     try {
         const eventsResult = await API.graphql(graphqlOperation(listEvents));
