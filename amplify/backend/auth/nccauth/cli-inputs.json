@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "myeventplannerIdentityPool",
+    "identityPoolName": "nccauthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "ncccam8fb02af3",
-    "userPoolName": "myeventplannerUserPool",
+    "resourceNameTruncated": "ncceve43e862af",
+    "userPoolName": "nccauthUserPool",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -14,13 +14,16 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code for NCC-EVENT-MANAGER",
-    "emailVerificationMessage": "(Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "family_name",
+      "name",
+      "preferred_username"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
@@ -31,10 +34,10 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "myeven8fb02af3_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "nccaut43e862af_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "8fb02af3",
-    "resourceName": "myeventplannerAuth",
+    "sharedId": "43e862af",
+    "resourceName": "nccauth",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "manual",
     "thirdPartyAuth": false,

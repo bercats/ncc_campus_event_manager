@@ -8,8 +8,9 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { API } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 import { createEvent } from "../graphql/mutations";
+const client = generateClient();
 export default function EventCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -154,7 +155,7 @@ export default function EventCreateForm(props) {
               modelFields[key] = null;
             }
           });
-          await API.graphql({
+          await client.graphql({
             query: createEvent.replaceAll("__typename", ""),
             variables: {
               input: {

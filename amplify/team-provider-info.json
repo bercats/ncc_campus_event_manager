@@ -1,26 +1,26 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-ncccampusmanager-dev-175636-authRole",
-      "UnauthRoleArn": "arn:aws:iam::933555619685:role/amplify-ncccampusmanager-dev-175636-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::933555619685:role/amplify-ncccampusmanager-dev-175636-authRole",
+      "AuthRoleName": "amplify-ncceventplanner-dev-02804-authRole",
+      "UnauthRoleArn": "arn:aws:iam::933555619685:role/amplify-ncceventplanner-dev-02804-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::933555619685:role/amplify-ncceventplanner-dev-02804-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-ncccampusmanager-dev-175636-deployment",
-      "UnauthRoleName": "amplify-ncccampusmanager-dev-175636-unauthRole",
-      "StackName": "amplify-ncccampusmanager-dev-175636",
-      "StackId": "arn:aws:cloudformation:us-east-1:933555619685:stack/amplify-ncccampusmanager-dev-175636/113ffe20-8174-11ee-8fa7-0ad86e720ecb",
-      "AmplifyAppId": "d2f7x4haiheqy"
+      "DeploymentBucketName": "amplify-ncceventplanner-dev-02804-deployment",
+      "UnauthRoleName": "amplify-ncceventplanner-dev-02804-unauthRole",
+      "StackName": "amplify-ncceventplanner-dev-02804",
+      "StackId": "arn:aws:cloudformation:us-east-1:933555619685:stack/amplify-ncceventplanner-dev-02804/b5d87700-a762-11ee-aa4e-125c32d5421f",
+      "AmplifyAppId": "d3cau7cby0ovct"
     },
     "categories": {
       "auth": {
-        "myeventplannerAuth": {},
+        "nccauth": {},
         "userPoolGroups": {}
       },
       "api": {
-        "ncccampusmanager": {}
+        "ncceventplanner": {}
       },
       "storage": {
-        "Posters": {}
+        "EventImages": {}
       }
     }
   }

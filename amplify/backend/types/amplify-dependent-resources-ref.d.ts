@@ -1,12 +1,12 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
-    "ncccampusmanager": {
+    "ncceventplanner": {
       "GraphQLAPIEndpointOutput": "string",
       "GraphQLAPIIdOutput": "string"
     }
   },
   "auth": {
-    "myeventplannerAuth": {
+    "nccauth": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -20,7 +20,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "Posters": {
+    "EventImages": {
       "BucketName": "string",
       "Region": "string"
     }

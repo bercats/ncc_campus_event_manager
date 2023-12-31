@@ -16,10 +16,10 @@ type Admin @model @auth(rules: [{allow: groups, groups: ["admins"], operations: 
   username: String!
 }
 
-type Event @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {           
-  eventId: ID! 
+type Event @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {
+  eventId: ID!
   timeAndDate: AWSDateTime!
-  eventName: String! 
+  eventName: String!
   eventPoster: String
   place: String!
   price: Float
