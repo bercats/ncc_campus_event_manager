@@ -152,55 +152,80 @@
         }
       }
     },
-    "apincccampusmanager": {
+    "authuserPoolGroups": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "Parameters": {
-          "AppSyncApiName": "ncccampusmanager",
-          "DynamoDBBillingMode": "PAY_PER_REQUEST",
-          "DynamoDBEnableServerSideEncryption": false,
-          "AuthCognitoUserPoolId": {
+          "AuthRoleArn": {
             "Fn::GetAtt": [
-              "authmyeventplannerAuth",
+              "AuthRole",
+              "Arn"
+            ]
+          },
+          "UnauthRoleArn": {
+            "Fn::GetAtt": [
+              "UnauthRole",
+              "Arn"
+            ]
+          },
+          "authnccauthUserPoolId": {
+            "Fn::GetAtt": [
+              "authnccauth",
               "Outputs.UserPoolId"
             ]
           },
-          "S3DeploymentBucket": "amplify-ncccampusmanager-dev-175636-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/41d94ea7e66af842c42e4a088edf0035261100c2",
+          "authnccauthAppClientIDWeb": {
+            "Fn::GetAtt": [
+              "authnccauth",
+              "Outputs.AppClientIDWeb"
+            ]
+          },
+          "authnccauthAppClientID": {
+            "Fn::GetAtt": [
+              "authnccauth",
+              "Outputs.AppClientID"
+            ]
+          },
+          "authnccauthIdentityPoolId": {
+            "Fn::GetAtt": [
+              "authnccauth",
+              "Outputs.IdentityPoolId"
+            ]
+          },
           "env": "dev"
         }
       }
     },
-    "authmyeventplannerAuth": {
+    "authnccauth": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/auth/myeventplannerAuth-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/nccauth-cloudformation-template.json",
         "Parameters": {
-          "identityPoolName": "myeventplannerIdentityPool",
+          "identityPoolName": "nccauthIdentityPool",
           "allowUnauthenticatedIdentities": false,
-          "resourceNameTruncated": "ncccam8fb02af3",
-          "userPoolName": "myeventplannerUserPool",
+          "resourceNameTruncated": "ncceve43e862af",
+          "userPoolName": "nccauthUserPool",
           "autoVerifiedAttributes": "email",
           "mfaConfiguration": "OFF",
           "mfaTypes": "SMS Text Message",
           "smsAuthenticationMessage": "Your authentication code is {####}",
           "smsVerificationMessage": "Your verification code is {####}",
-          "emailVerificationSubject": "Your verification code for NCC-EVENT-MANAGER",
-          "emailVerificationMessage": "(Your verification code is {####}",
+          "emailVerificationSubject": "Your verification code",
+          "emailVerificationMessage": "Your verification code is {####}",
           "defaultPasswordPolicy": false,
           "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": "",
-          "requiredAttributes": "email",
+          "requiredAttributes": "email,family_name,name,preferred_username",
           "aliasAttributes": "",
           "userpoolClientGenerateSecret": false,
           "userpoolClientRefreshTokenValidity": 30,
           "userpoolClientWriteAttributes": "email",
           "userpoolClientReadAttributes": "email",
-          "userpoolClientLambdaRole": "myeven8fb02af3_userpoolclient_lambda_role",
+          "userpoolClientLambdaRole": "nccaut43e862af_userpoolclient_lambda_role",
           "userpoolClientSetAttributes": false,
-          "sharedId": "8fb02af3",
-          "resourceName": "myeventplannerAuth",
+          "sharedId": "43e862af",
+          "resourceName": "nccauth",
           "authSelections": "identityPoolAndUserPool",
           "useDefault": "manual",
           "thirdPartyAuth": false,
@@ -231,57 +256,32 @@
         }
       }
     },
-    "authuserPoolGroups": {
+    "apincceventplanner": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "Parameters": {
-          "AuthRoleArn": {
+          "AppSyncApiName": "ncceventplanner",
+          "DynamoDBBillingMode": "PAY_PER_REQUEST",
+          "DynamoDBEnableServerSideEncryption": false,
+          "AuthCognitoUserPoolId": {
             "Fn::GetAtt": [
-              "AuthRole",
-              "Arn"
-            ]
-          },
-          "UnauthRoleArn": {
-            "Fn::GetAtt": [
-              "UnauthRole",
-              "Arn"
-            ]
-          },
-          "authmyeventplannerAuthUserPoolId": {
-            "Fn::GetAtt": [
-              "authmyeventplannerAuth",
+              "authnccauth",
               "Outputs.UserPoolId"
             ]
           },
-          "authmyeventplannerAuthAppClientIDWeb": {
-            "Fn::GetAtt": [
-              "authmyeventplannerAuth",
-              "Outputs.AppClientIDWeb"
-            ]
-          },
-          "authmyeventplannerAuthAppClientID": {
-            "Fn::GetAtt": [
-              "authmyeventplannerAuth",
-              "Outputs.AppClientID"
-            ]
-          },
-          "authmyeventplannerAuthIdentityPoolId": {
-            "Fn::GetAtt": [
-              "authmyeventplannerAuth",
-              "Outputs.IdentityPoolId"
-            ]
-          },
+          "S3DeploymentBucket": "amplify-ncceventplanner-dev-02804-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/f2d8b7ed21e6ef575702a4b126c122926b1458df",
           "env": "dev"
         }
       }
     },
-    "storagePosters": {
+    "storageEventImages": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "Parameters": {
-          "bucketName": "ncccampuseventmanagerbucket",
+          "bucketName": "myeventplannerbucket",
           "selectedGuestPermissions": "",
           "selectedAuthenticatedPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket",
           "unauthRoleName": {
@@ -290,13 +290,13 @@
           "authRoleName": {
             "Ref": "AuthRoleName"
           },
-          "s3PrivatePolicy": "Private_policy_525c79bf",
-          "s3ProtectedPolicy": "Protected_policy_525c79bf",
-          "s3PublicPolicy": "Public_policy_525c79bf",
-          "s3ReadPolicy": "read_policy_525c79bf",
-          "s3UploadsPolicy": "Uploads_policy_525c79bf",
-          "authPolicyName": "s3_amplify_525c79bf",
-          "unauthPolicyName": "s3_amplify_525c79bf",
+          "s3PrivatePolicy": "Private_policy_b4e820d9",
+          "s3ProtectedPolicy": "Protected_policy_b4e820d9",
+          "s3PublicPolicy": "Public_policy_b4e820d9",
+          "s3ReadPolicy": "read_policy_b4e820d9",
+          "s3UploadsPolicy": "Uploads_policy_b4e820d9",
+          "authPolicyName": "s3_amplify_b4e820d9",
+          "unauthPolicyName": "s3_amplify_b4e820d9",
           "AuthenticatedAllowList": "ALLOW",
           "GuestAllowList": "DISALLOW",
           "s3PermissionsAuthenticatedPrivate": "s3:PutObject,s3:GetObject",
@@ -313,7 +313,7 @@
       "DependsOn": [
         "AuthRole",
         "UnauthRole",
-        "authmyeventplannerAuth"
+        "authnccauth"
       ],
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -421,7 +421,7 @@
         },
         "idpId": {
           "Fn::GetAtt": [
-            "authmyeventplannerAuth",
+            "authnccauth",
             "Outputs.IdentityPoolId"
           ]
         },

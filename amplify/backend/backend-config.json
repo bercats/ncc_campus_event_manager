@@ -1,13 +1,13 @@
 {
   "api": {
-    "ncccampusmanager": {
+    "ncceventplanner": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "myeventplannerAuth"
+          "resourceName": "nccauth"
         }
       ],
       "output": {
@@ -16,7 +16,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authmyeventplannerAuth"
+              "userPoolId": "authnccauth"
             }
           }
         }
@@ -26,7 +26,7 @@
     }
   },
   "auth": {
-    "myeventplannerAuth": {
+    "nccauth": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -39,7 +39,10 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "FAMILY_NAME",
+          "NAME",
+          "PREFERRED_USERNAME"
         ],
         "socialProviders": [],
         "usernameAttributes": [
@@ -62,7 +65,7 @@
             "IdentityPoolId"
           ],
           "category": "auth",
-          "resourceName": "myeventplannerAuth"
+          "resourceName": "nccauth"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -70,7 +73,7 @@
     }
   },
   "storage": {
-    "Posters": {
+    "EventImages": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

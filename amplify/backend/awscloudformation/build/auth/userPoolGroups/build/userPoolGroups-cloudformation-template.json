@@ -11,21 +11,21 @@
     "UnauthRoleArn": {
       "Type": "String"
     },
-    "authmyeventplannerAuthUserPoolId": {
+    "authnccauthUserPoolId": {
       "Type": "String",
-      "Default": "authmyeventplannerAuthUserPoolId"
+      "Default": "authnccauthUserPoolId"
     },
-    "authmyeventplannerAuthIdentityPoolId": {
+    "authnccauthIdentityPoolId": {
       "Type": "String",
-      "Default": "authmyeventplannerAuthIdentityPoolId"
+      "Default": "authnccauthIdentityPoolId"
     },
-    "authmyeventplannerAuthAppClientID": {
+    "authnccauthAppClientID": {
       "Type": "String",
-      "Default": "authmyeventplannerAuthAppClientID"
+      "Default": "authnccauthAppClientID"
     },
-    "authmyeventplannerAuthAppClientIDWeb": {
+    "authnccauthAppClientIDWeb": {
       "Type": "String",
-      "Default": "authmyeventplannerAuthAppClientIDWeb"
+      "Default": "authnccauthAppClientIDWeb"
     }
   },
   "Conditions": {
@@ -43,7 +43,7 @@
       "Type": "AWS::Cognito::UserPoolGroup",
       "Properties": {
         "UserPoolId": {
-          "Ref": "authmyeventplannerAuthUserPoolId"
+          "Ref": "authnccauthUserPoolId"
         },
         "Description": "override success",
         "GroupName": "admins",
@@ -72,7 +72,7 @@
               "Condition": {
                 "StringEquals": {
                   "cognito-identity.amazonaws.com:aud": {
-                    "Ref": "authmyeventplannerAuthIdentityPoolId"
+                    "Ref": "authnccauthIdentityPoolId"
                   }
                 },
                 "ForAnyValue:StringLike": {
@@ -87,7 +87,7 @@
             "",
             [
               {
-                "Ref": "authmyeventplannerAuthUserPoolId"
+                "Ref": "authnccauthUserPoolId"
               },
               "-adminsGroupRole"
             ]

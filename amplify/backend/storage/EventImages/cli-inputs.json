@@ -1,7 +1,7 @@
 {
-  "resourceName": "Posters",
-  "policyUUID": "525c79bf",
-  "bucketName": "ncccampuseventmanagerbucket",
+  "resourceName": "EventImages",
+  "policyUUID": "b4e820d9",
+  "bucketName": "myeventplannerbucket",
   "storageAccess": "auth",
   "guestAccess": [],
   "authAccess": [
