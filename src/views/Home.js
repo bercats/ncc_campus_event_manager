@@ -163,7 +163,7 @@ const Home = () => {
         <div className="home">
             <div className="sidebar">
                 <div className="sidebar-header">
-                    <h2>Event Planner</h2>
+                    <h2>NCC Event Planner</h2>
                 </div>
                 {menuItems.map((item) => (
                         <div className="menu-item" onClick={() => callMethod(item.methodName)} key={item.menuText}>
