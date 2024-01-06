@@ -89,15 +89,15 @@ const Home = () => {
               filter: { timeAndDate: { gt: new Date().toISOString(), }, }, }));
         
             let events = results.data.listEvents.items;
-            const mockEvents = await listMockEvents();
-            console.log('Mock Events:', mockEvents);
-            mockEvents.sort((a, b) => {
+            // const mockEvents = await listMockEvents();
+            // console.log('Mock Events:', mockEvents);
+            events.sort((a, b) => {
               const astart = new Date(a.timeAndDate);
               const bstart = new Date(b.timeAndDate);
               return astart - bstart;
             });
         
-            setEvents(mockEvents);
+            setEvents(events);
             console.log('Updated Events State:', events);
         
             await getSecureImageUrls();

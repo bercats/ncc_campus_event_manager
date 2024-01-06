@@ -7,7 +7,7 @@ const EventCard = ({ event }) => {
   function getFormattedDate() {
     const date = new Date(event.event_datetime_start);
     const day = date.getDate().toString().padStart(2, "0");
-    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(date);
+    const month = date.getMonth();
     const year = date.getFullYear().toString();
     let hours = date.getHours();
     const amPm = hours >= 12 ? "PM" : "AM";
@@ -44,15 +44,15 @@ const EventCard = ({ event }) => {
 
   return (
     <div className="event-card">
-      <img src={event.url} alt="Event" className="event-image" />
+      <img src={event.eventPoster} alt="Event" className="event-image" />
 
       <div className="event-details">
-        <h2>{event.name}</h2>
-        <p className="event-date">{getFormattedDate()}</p>
-        <p className="room-name">{event.room_name}</p>
+        <h2>{event.eventName}</h2>
+        <p className="event-timeAndDate">{getFormattedDate()}</p>
+        <p className="place">{event.place}</p>
         <p className="event-description">{event.description}</p>
         <p className="ticket-info">
-          Tickets available: {numTicketsAvailable} (capacity: {event.total_tickets})
+          Tickets available: {numTicketsAvailable} (capacity: {event.capacity})
         </p>
 
         <div className="event-actions">
