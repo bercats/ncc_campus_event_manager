@@ -31,6 +31,7 @@ export declare type CreateEvent2InputValues = {
     capacity?: number;
     eventPlanner?: string;
     description?: string;
+    seatsLeft?: number;
 };
 export declare type CreateEvent2ValidationValues = {
     eventId?: ValidationFunction<number>;
@@ -42,6 +43,7 @@ export declare type CreateEvent2ValidationValues = {
     capacity?: ValidationFunction<number>;
     eventPlanner?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    seatsLeft?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CreateEvent2OverridesProps = {
@@ -55,6 +57,7 @@ export declare type CreateEvent2OverridesProps = {
     capacity?: PrimitiveOverrideProps<TextFieldProps>;
     eventPlanner?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    seatsLeft?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CreateEvent2Props = React.PropsWithChildren<{
     overrides?: CreateEvent2OverridesProps | undefined | null;

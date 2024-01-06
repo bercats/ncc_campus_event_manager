@@ -4,6 +4,7 @@ type User @model @auth(rules: [{allow: groups, groups: ["admins"], operations: [
   surname: String
   METUmail: String!
   yoS: String
+  tickets: [Int]
 }
 
 type Admin @model @auth(rules: [{allow: groups, groups: ["admins"], operations: [read, create, update, delete]}]) {
@@ -21,5 +22,6 @@ type Event @model @auth(rules: [{allow: private, operations: [read]}, {allow: gr
   capacity: Int
   eventPlanner: String!
   description: String
+  seatsLeft: Int
 }
  

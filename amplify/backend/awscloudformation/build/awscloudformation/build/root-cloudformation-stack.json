@@ -173,7 +173,7 @@
             "Ref": "UnauthRoleName"
           },
           "S3DeploymentBucket": "amplify-ncceventplanner-dev-02804-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/3f9bb271ed44fcd0e02b3a56351b7cce0348db08",
+          "S3DeploymentRootKey": "amplify-appsync-files/b04d5602fa608d2bdc891b37eaee059a3be075a5",
           "env": "dev"
         }
       }

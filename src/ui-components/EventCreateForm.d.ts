@@ -31,6 +31,7 @@ export declare type EventCreateFormInputValues = {
     capacity?: number;
     eventPlanner?: string;
     description?: string;
+    seatsLeft?: number;
 };
 export declare type EventCreateFormValidationValues = {
     eventId?: ValidationFunction<number>;
@@ -42,6 +43,7 @@ export declare type EventCreateFormValidationValues = {
     capacity?: ValidationFunction<number>;
     eventPlanner?: ValidationFunction<string>;
     description?: ValidationFunction<string>;
+    seatsLeft?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type EventCreateFormOverridesProps = {
@@ -55,6 +57,7 @@ export declare type EventCreateFormOverridesProps = {
     capacity?: PrimitiveOverrideProps<TextFieldProps>;
     eventPlanner?: PrimitiveOverrideProps<TextFieldProps>;
     description?: PrimitiveOverrideProps<TextFieldProps>;
+    seatsLeft?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type EventCreateFormProps = React.PropsWithChildren<{
     overrides?: EventCreateFormOverridesProps | undefined | null;

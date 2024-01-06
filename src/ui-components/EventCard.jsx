@@ -1,8 +1,8 @@
 import React from 'react';
 
 const EventCard = ({ event }) => {
-  const numTicketsAvailable = event.total_tickets - event.tickets.length;
-  const isBookable = event.tickets.length < event.total_tickets;
+  const numTicketsAvailable = event.capacity - event.seatsLeft;
+  const isBookable = event.seatsLeft < event.capacity;
 
   function getFormattedDate() {
     const date = new Date(event.event_datetime_start);

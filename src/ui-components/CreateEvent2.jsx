@@ -31,6 +31,7 @@ export default function CreateEvent2(props) {
     capacity: "",
     eventPlanner: "",
     description: "",
+    seatsLeft: "",
   };
   const [eventId, setEventId] = React.useState(initialValues.eventId);
   const [timeAndDate, setTimeAndDate] = React.useState(
@@ -49,6 +50,7 @@ export default function CreateEvent2(props) {
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [seatsLeft, setSeatsLeft] = React.useState(initialValues.seatsLeft);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setEventId(initialValues.eventId);
@@ -60,6 +62,7 @@ export default function CreateEvent2(props) {
     setCapacity(initialValues.capacity);
     setEventPlanner(initialValues.eventPlanner);
     setDescription(initialValues.description);
+    setSeatsLeft(initialValues.seatsLeft);
     setErrors({});
   };
   const validations = {
@@ -72,6 +75,7 @@ export default function CreateEvent2(props) {
     capacity: [],
     eventPlanner: [{ type: "Required" }],
     description: [],
+    seatsLeft: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -125,6 +129,7 @@ export default function CreateEvent2(props) {
           capacity,
           eventPlanner,
           description,
+          seatsLeft,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -196,6 +201,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventId ?? value;
@@ -230,6 +236,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.timeAndDate ?? value;
@@ -262,6 +269,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventName ?? value;
@@ -294,6 +302,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventPoster ?? value;
@@ -326,6 +335,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.place ?? value;
@@ -362,6 +372,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.price ?? value;
@@ -398,6 +409,7 @@ export default function CreateEvent2(props) {
               capacity: value,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.capacity ?? value;
@@ -430,6 +442,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner: value,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventPlanner ?? value;
@@ -462,6 +475,7 @@ export default function CreateEvent2(props) {
               capacity,
               eventPlanner,
               description: value,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -475,6 +489,43 @@ export default function CreateEvent2(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="Seats left"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={seatsLeft}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              eventId,
+              timeAndDate,
+              eventName,
+              eventPoster,
+              place,
+              price,
+              capacity,
+              eventPlanner,
+              description,
+              seatsLeft: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.seatsLeft ?? value;
+          }
+          if (errors.seatsLeft?.hasError) {
+            runValidationTasks("seatsLeft", value);
+          }
+          setSeatsLeft(value);
+        }}
+        onBlur={() => runValidationTasks("seatsLeft", seatsLeft)}
+        errorMessage={errors.seatsLeft?.errorMessage}
+        hasError={errors.seatsLeft?.hasError}
+        {...getOverrideProps(overrides, "seatsLeft")}
       ></TextField>
       <Flex
         justifyContent="space-between"

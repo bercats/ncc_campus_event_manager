@@ -42,12 +42,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-01-06T19:30:43.745Z",
+      "lastPushTimeStamp": "2024-01-06T22:51:42.631Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apincceventplanner"
       },
-      "lastPushDirHash": "Zw5mhV1mQ3VoYL739D7T3ApCE9s="
+      "lastPushDirHash": "puNGCUnu4vvYEPOAoG44FQWC4j0="
     }
   },
   "auth": {
@@ -88,7 +88,7 @@
         "IdentityPoolName": "nccauthIdentityPool__dev",
         "UserPoolName": "nccauthUserPool"
       },
-      "lastPushTimeStamp": "2024-01-06T19:30:43.625Z",
+      "lastPushTimeStamp": "2024-01-06T22:51:37.268Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/nccauth-cloudformation-template.json",
         "logicalId": "authnccauth"
@@ -112,7 +112,7 @@
       "output": {
         "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_sGpLq2jA5-adminsGroupRole"
       },
-      "lastPushTimeStamp": "2024-01-06T19:30:43.626Z",
+      "lastPushTimeStamp": "2024-01-06T22:51:37.288Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "logicalId": "authuserPoolGroups"
@@ -128,7 +128,7 @@
         "BucketName": "myeventplannerbucket02804-dev",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2024-01-06T19:30:43.627Z",
+      "lastPushTimeStamp": "2024-01-06T22:51:37.298Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageEventImages"
