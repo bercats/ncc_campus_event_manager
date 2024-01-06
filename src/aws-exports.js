@@ -3,10 +3,18 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
+<<<<<<< Updated upstream
     "aws_appsync_graphqlEndpoint": "https://7ipjp2ij3vfrbdlr3un4hpq3sy.appsync-api.us-east-1.amazonaws.com/graphql",
     "aws_appsync_region": "us-east-1",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
     "aws_cognito_identity_pool_id": "us-east-1:1797eb7f-ec5b-47fd-b1cf-0242bc1591c4",
+=======
+    "aws_appsync_graphqlEndpoint": "http://172.17.48.1:20002/graphql",
+    "aws_appsync_region": "us-east-1",
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
+    "aws_appsync_dangerously_connect_to_http_endpoint_for_testing": true,
+    "aws_cognito_identity_pool_id": "us-east-1:3aaf4d32-d7a3-46dc-8043-e043b733db7a",
+>>>>>>> Stashed changes
     "aws_cognito_region": "us-east-1",
     "aws_user_pools_id": "us-east-1_4nYAHFO8U",
     "aws_user_pools_web_client_id": "718qb1khvhldus94eq9rsb8lh4",
@@ -29,7 +37,11 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
+<<<<<<< Updated upstream
     "aws_user_files_s3_bucket": "ncccampuseventmanagerbucket175636-dev",
+=======
+    "aws_user_files_s3_bucket": "myeventplannerbucket02804-dev",
+>>>>>>> Stashed changes
     "aws_user_files_s3_bucket_region": "us-east-1"
 };
 

@@ -45,6 +45,7 @@
       }
     }
   },
+<<<<<<< Updated upstream
   "auth": {
     "myeventplannerAuth": {
       "customAuth": false,
@@ -84,6 +85,85 @@
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/auth/myeventplannerAuth-cloudformation-template.json",
         "logicalId": "authmyeventplannerAuth"
+=======
+  "api": {
+    "ncceventplanner": {
+      "service": "AppSync",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "nccauth"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authnccauth"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "hohwkvssafbrhcxw7pjfebhqgq",
+        "GraphQLAPIEndpointOutput": "http://172.17.48.1:20002/graphql",
+        "GraphQLAPIKeyOutput": null
+      },
+      "providerPlugin": "awscloudformation",
+      "lastPushTimeStamp": "2024-01-06T00:57:13.651Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apincceventplanner"
+      },
+      "testMode": true
+    }
+  },
+  "auth": {
+    "nccauth": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [
+          "EMAIL",
+          "FAMILY_NAME",
+          "NAME",
+          "PREFERRED_USERNAME"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "us-east-1_sGpLq2jA5",
+        "AppClientIDWeb": "67mpvc2n2mif2kv5m0v042g35d",
+        "AppClientID": "1aps90tfks6bsgd5tpnjk74sq9",
+        "IdentityPoolId": "us-east-1:3aaf4d32-d7a3-46dc-8043-e043b733db7a",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:933555619685:userpool/us-east-1_sGpLq2jA5",
+        "IdentityPoolName": "nccauthIdentityPool__dev",
+        "UserPoolName": "nccauthUserPool"
+      },
+      "lastPushTimeStamp": "2024-01-06T00:55:43.448Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/nccauth-cloudformation-template.json",
+        "logicalId": "authnccauth"
+>>>>>>> Stashed changes
       }
     },
     "userPoolGroups": {
@@ -102,17 +182,29 @@
       "providerPlugin": "awscloudformation",
       "service": "Cognito-UserPool-Groups",
       "output": {
+<<<<<<< Updated upstream
         "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_4nYAHFO8U-adminsGroupRole"
       },
       "lastPushTimeStamp": "2023-12-14T00:47:18.051Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+=======
+        "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_sGpLq2jA5-adminsGroupRole"
+      },
+      "lastPushTimeStamp": "2024-01-06T00:55:47.308Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+>>>>>>> Stashed changes
         "logicalId": "authuserPoolGroups"
       }
     }
   },
   "storage": {
+<<<<<<< Updated upstream
     "Posters": {
+=======
+    "EventImages": {
+>>>>>>> Stashed changes
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3",
@@ -120,10 +212,17 @@
         "BucketName": "ncccampuseventmanagerbucket175636-dev",
         "Region": "us-east-1"
       },
+<<<<<<< Updated upstream
       "lastPushTimeStamp": "2023-12-14T00:47:18.148Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncccampusmanager-dev-175636-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storagePosters"
+=======
+      "lastPushTimeStamp": "2024-01-06T00:55:47.394Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storageEventImages"
+>>>>>>> Stashed changes
       }
     }
   }

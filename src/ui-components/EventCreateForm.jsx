@@ -179,7 +179,12 @@ export default function EventCreateForm(props) {
       {...rest}
     >
       <TextField
-        label="Event id"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Event id</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={eventId}
@@ -211,7 +216,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "eventId")}
       ></TextField>
       <TextField
-        label="Time and date"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Time and date</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         type="datetime-local"
@@ -245,7 +255,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "timeAndDate")}
       ></TextField>
       <TextField
-        label="Event name"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Event name</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={eventName}
@@ -309,7 +324,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "eventPoster")}
       ></TextField>
       <TextField
-        label="Place"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Place</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={place}
@@ -413,7 +433,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "capacity")}
       ></TextField>
       <TextField
-        label="Event planner"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Event planner</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={eventPlanner}
