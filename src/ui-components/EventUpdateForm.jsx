@@ -8,10 +8,9 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { generateClient } from "aws-amplify/api";
+import { API } from "aws-amplify";
 import { getEvent } from "../graphql/queries";
 import { updateEvent } from "../graphql/mutations";
-const client = generateClient();
 export default function EventUpdateForm(props) {
   const {
     id: idProp,
@@ -73,7 +72,7 @@ export default function EventUpdateForm(props) {
     const queryData = async () => {
       const record = idProp
         ? (
-            await client.graphql({
+            await API.graphql({
               query: getEvent.replaceAll("__typename", ""),
               variables: { id: idProp },
             })
@@ -176,7 +175,7 @@ export default function EventUpdateForm(props) {
               modelFields[key] = null;
             }
           });
-          await client.graphql({
+          await API.graphql({
             query: updateEvent.replaceAll("__typename", ""),
             variables: {
               input: {
@@ -202,9 +201,13 @@ export default function EventUpdateForm(props) {
         label="Event id"
         isRequired={true}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={eventId}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
               eventId: value,

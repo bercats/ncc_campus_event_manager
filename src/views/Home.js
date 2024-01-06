@@ -1,11 +1,19 @@
 // Home.js
 import React, { useEffect, useState } from 'react';
-import { Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
+import {Amplify, Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
 import { listEvents} from "../graphql/queries";
 import { listMockEvents } from '../mock';
 import EventCard from "../ui-components/EventCard";
 import './Home.css';
-import { deleteAllRecords, addMockRecords } from "../mock.js"
+import { deleteAllRecords, addMockRecords } from "../mock2.js"
+import { createEvent } from '../graphql/mutations';
+import { EventCreateForm } from '../ui-components';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import amplifyconfig from '../amplifyconfiguration.json';
+//const client = generateClient()
+Amplify.configure(amplifyconfig);
+
 const menuItems = [
     {
         menuText: 'All Upcoming Events',
@@ -29,11 +37,14 @@ const menuItems = [
     },
 ];
 
+
+
 const Home = () => {
     const [currentEventsView, setCurrentEventsView] = useState('All Upcoming Events');
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminDialog, setAdminDialog] = useState(false);
     const [events, setEvents] = useState([]);
+    const [showEventCreateForm, setShowEventCreateForm] = useState(false);
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -49,7 +60,7 @@ const Home = () => {
             }
         };
         checkAdmin();
-    }, []);
+    }, [isAdmin]);
 
     const callMethod = (methodName) => {
         switch (methodName) {
@@ -75,14 +86,14 @@ const Home = () => {
         
         try {
             const results = await API.graphql(graphqlOperation(listEvents, {
-              filter: { event_datetime_start: { gt: new Date().toISOString(), }, }, }));
+              filter: { timeAndDate: { gt: new Date().toISOString(), }, }, }));
         
             let events = results.data.listEvents.items;
             const mockEvents = await listMockEvents();
             console.log('Mock Events:', mockEvents);
             mockEvents.sort((a, b) => {
-              const astart = new Date(a.event_datetime_start);
-              const bstart = new Date(b.event_datetime_start);
+              const astart = new Date(a.timeAndDate);
+              const bstart = new Date(b.timeAndDate);
               return astart - bstart;
             });
         
@@ -105,7 +116,7 @@ const Home = () => {
         setCurrentEventsView('My Tickets');
     };
 
-    const showMyPlannedEvents = () => {
+    const showMyPlannedEvents = () => { 
         setCurrentEventsView('My Planned Events');
     };
 
@@ -131,6 +142,12 @@ const Home = () => {
 
         // Call the adminTools function
         adminTools();
+    };
+
+    const toggleEventCreateForm = () => {
+        setShowEventCreateForm(!showEventCreateForm);
+        
+        return (<EventCreateForm/>);
     };
     
     const getSecureImageUrls = async (events) => { // Modify function signature
@@ -171,6 +188,27 @@ const Home = () => {
                             <span>{item.menuText}</span>
                         </div>
                     ))}
+                    {isAdmin && (
+                    <div className="menu-item" onClick={() => toggleEventCreateForm()}>
+                        <i className="fas fa-plus"></i>
+                        
+                        <Popup name="popup" trigger={<button className="button"> Create Event </button>}  modal>
+                        <EventCreateForm
+                            onSubmit={(fields) => {
+                                // Example function to trim all string inputs
+                                const updatedFields = {}
+                                Object.keys(fields).forEach(key => {
+                                    if (typeof fields[key] === 'string') {
+                                        updatedFields[key] = fields[key].trim()
+                                    } else {
+                                        updatedFields[key] = fields[key]
+                                    }
+                                })
+                                return updatedFields
+                            }}
+                        />
+                        </Popup>
+                    </div>)}
             </div>
             <div className="content">
                 <div className="app-bar">
@@ -186,6 +224,7 @@ const Home = () => {
                         <div key={event.id}>
                             <EventCard event={event} />
                         </div>
+
                     ))}
                 </div>
             </div>

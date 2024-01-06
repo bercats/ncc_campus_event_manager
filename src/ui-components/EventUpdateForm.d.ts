@@ -22,7 +22,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type EventUpdateFormInputValues = {
-    eventId?: string;
+    eventId?: number;
     timeAndDate?: string;
     eventName?: string;
     eventPoster?: string;
@@ -33,7 +33,7 @@ export declare type EventUpdateFormInputValues = {
     description?: string;
 };
 export declare type EventUpdateFormValidationValues = {
-    eventId?: ValidationFunction<string>;
+    eventId?: ValidationFunction<number>;
     timeAndDate?: ValidationFunction<string>;
     eventName?: ValidationFunction<string>;
     eventPoster?: ValidationFunction<string>;

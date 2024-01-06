@@ -171,3 +171,7 @@ button:hover {
         flex-direction: column;
     }
 }
+
+.popup-content{
+    overflow-y: scroll;
+}

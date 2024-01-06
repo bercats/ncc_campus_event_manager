@@ -1,8 +1,8 @@
 import React from 'react';
 
-function EventCard({ event }) {
+const EventCard = ({ event }) => {
   const numTicketsAvailable = event.total_tickets - event.tickets.length;
-  const bookable = event.tickets.length < event.total_tickets;
+  const isBookable = event.tickets.length < event.total_tickets;
 
   function getFormattedDate() {
     const date = new Date(event.event_datetime_start);
@@ -12,7 +12,7 @@ function EventCard({ event }) {
     let hours = date.getHours();
     const amPm = hours >= 12 ? "PM" : "AM";
     hours %= 12;
-    hours = hours ? hours : 12;
+    hours = hours || 12;
     const minutes = date.getMinutes().toString().padStart(2, "0");
 
     const endHour = hours + event.event_duration;
@@ -22,27 +22,51 @@ function EventCard({ event }) {
   }
 
   function bookTicket() {
-    // Implement your book ticket logic here
+    fetch(`/api/events/${event.id}/book_ticket`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Ticket booked!');
+        } else {
+          alert('Ticket booking failed!');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 
   return (
-    <div className="card mx-auto" style={{maxWidth: '300px'}}>
-      <img src={event.url} alt="Event" style={{width: '100%'}} />
-      <div className="card-body">
-        <h5 className="card-title">{event.name}</h5>
-        <h6 className="card-subtitle mb-2 text-muted">{getFormattedDate()}</h6>
-        <h6 className="card-subtitle mb-2 text-red">{event.room_name}</h6>
-        <p className="card-text">{event.description}</p>
-        <h6 className="card-subtitle mb-2 text-muted">Tickets available: {numTicketsAvailable} (capacity: {event.total_tickets})</h6>
-        <hr className="mx-4 mb-1" />
-        {bookable ? (
-          <button className="btn btn-primary" onClick={bookTicket}>Book Ticket</button>
+    <div className="event-card">
+      <img src={event.url} alt="Event" className="event-image" />
+
+      <div className="event-details">
+        <h2>{event.name}</h2>
+        <p className="event-date">{getFormattedDate()}</p>
+        <p className="room-name">{event.room_name}</p>
+        <p className="event-description">{event.description}</p>
+        <p className="ticket-info">
+          Tickets available: {numTicketsAvailable} (capacity: {event.total_tickets})
+        </p>
+
+        <div className="event-actions">
+        {isBookable ? (
+          <button className="book-button" onClick={() => bookTicket()}>
+              Book Ticket
+            </button>
         ) : (
-          <button className="btn btn-warning" disabled>Sold Out!</button>
+          <button className="sold-out-button">Sold Out!</button>
         )}
+</div>
       </div>
     </div>
   );
-}
+};
 
 export default EventCard;

@@ -10,7 +10,7 @@ import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { API } from "aws-amplify";
 import { createEvent } from "../graphql/mutations";
-export default function EventCreateForm(props) {
+export default function CreateEvent2(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -63,7 +63,7 @@ export default function EventCreateForm(props) {
     setErrors({});
   };
   const validations = {
-    eventId: [{ type: "Required" }],
+    eventId: [],
     timeAndDate: [{ type: "Required" }],
     eventName: [{ type: "Required" }],
     eventPoster: [],
@@ -175,17 +175,12 @@ export default function EventCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "EventCreateForm")}
+      {...getOverrideProps(overrides, "CreateEvent2")}
       {...rest}
     >
       <TextField
-        label={
-          <span style={{ display: "inline-flex" }}>
-            <span>Event id</span>
-            <span style={{ color: "red" }}>*</span>
-          </span>
-        }
-        isRequired={true}
+        label="Event id"
+        isRequired={false}
         isReadOnly={false}
         value={eventId}
         onChange={(e) => {
@@ -216,12 +211,7 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "eventId")}
       ></TextField>
       <TextField
-        label={
-          <span style={{ display: "inline-flex" }}>
-            <span>Time and date</span>
-            <span style={{ color: "red" }}>*</span>
-          </span>
-        }
+        label="Time and date"
         isRequired={true}
         isReadOnly={false}
         type="datetime-local"
@@ -255,12 +245,7 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "timeAndDate")}
       ></TextField>
       <TextField
-        label={
-          <span style={{ display: "inline-flex" }}>
-            <span>Event name</span>
-            <span style={{ color: "red" }}>*</span>
-          </span>
-        }
+        label="Event name"
         isRequired={true}
         isReadOnly={false}
         value={eventName}
@@ -324,12 +309,7 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "eventPoster")}
       ></TextField>
       <TextField
-        label={
-          <span style={{ display: "inline-flex" }}>
-            <span>Place</span>
-            <span style={{ color: "red" }}>*</span>
-          </span>
-        }
+        label="Place"
         isRequired={true}
         isReadOnly={false}
         value={place}
@@ -433,12 +413,7 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "capacity")}
       ></TextField>
       <TextField
-        label={
-          <span style={{ display: "inline-flex" }}>
-            <span>Event planner</span>
-            <span style={{ color: "red" }}>*</span>
-          </span>
-        }
+        label="Event planner"
         isRequired={true}
         isReadOnly={false}
         value={eventPlanner}
