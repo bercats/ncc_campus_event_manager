@@ -108,9 +108,39 @@ const Home = () => {
           }
     };
 
-    const showAllPastEvents = () => {
+    const showAllPastEvents = async () => {
         setCurrentEventsView('All Past Events');
+        try {
+            // Use the current date and time as the reference point
+            const currentDate = new Date();
+    
+            // Adjust the GraphQL query to fetch events with timeAndDate less than the current date
+            const results = await API.graphql(graphqlOperation(listEvents, {
+                filter: {
+                    timeAndDate: {
+                        lt: currentDate.toISOString(),
+                    },
+                },
+            }));
+    
+            let pastEvents = results.data.listEvents.items;
+            pastEvents.sort((a, b) => {
+                const aDate = new Date(a.timeAndDate);
+                const bDate = new Date(b.timeAndDate);
+                return bDate - aDate; // Sorting in descending order (most recent past events first)
+            });
+    
+            setEvents(pastEvents);
+            console.log('Updated Events State with Past Events:', pastEvents);
+    
+            // Optionally, update the event URLs if needed
+            // await getSecureImageUrls(pastEvents);
+    
+        } catch (err) {
+            console.log("Error retrieving past events: ", err);
+        }
     };
+    
 
     const showMyTickets = () => {
         setCurrentEventsView('My Tickets');

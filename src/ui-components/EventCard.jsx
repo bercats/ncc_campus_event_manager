@@ -1,13 +1,26 @@
 import React from 'react';
 
 const EventCard = ({ event }) => {
-  const numTicketsAvailable = event.capacity - event.seatsLeft;
-  const isBookable = event.seatsLeft < event.capacity;
+  // Ensure that the capacity and seatsLeft are numbers before subtracting
+  const numTicketsAvailable = !isNaN(event.capacity) && !isNaN(event.seatsLeft)
+    ? event.capacity - event.seatsLeft
+    : 'N/A';
+  
+  // Ensure that numTicketsAvailable is a number before comparing
+  const isBookable = !isNaN(numTicketsAvailable) && numTicketsAvailable > 0;
 
   function getFormattedDate() {
+    if (!event.event_datetime_start) {
+      return 'Date information not available';
+    }
+    
     const date = new Date(event.event_datetime_start);
+    if (isNaN(date.getTime())) {
+      return 'Invalid date';
+    }
+
     const day = date.getDate().toString().padStart(2, "0");
-    const month = date.getMonth();
+    const month = date.toLocaleString('default', { month: 'long' });
     const year = date.getFullYear().toString();
     let hours = date.getHours();
     const amPm = hours >= 12 ? "PM" : "AM";
@@ -15,9 +28,10 @@ const EventCard = ({ event }) => {
     hours = hours || 12;
     const minutes = date.getMinutes().toString().padStart(2, "0");
 
-    const endHour = hours + event.event_duration;
+    let endHour = hours + (isNaN(event.event_duration) ? 0 : event.event_duration);
+    endHour = endHour > 12 ? endHour - 12 : endHour;
 
-    const formattedDate = `${day} ${month} ${year}, ${hours}:${minutes} ${amPm} - ${endHour}:00 ${amPm}`;
+    const formattedDate = `${day} ${month} ${year}, ${hours}:${minutes} ${amPm} - ${endHour}:${minutes} ${amPm}`;
     return formattedDate;
   }
 
@@ -44,26 +58,29 @@ const EventCard = ({ event }) => {
 
   return (
     <div className="event-card">
-      <img src={event.eventPoster} alt="Event" className="event-image" />
-
+      {event.eventPoster && <img src={event.eventPoster} alt="Event" className="event-image" />}
       <div className="event-details">
-        <h2>{event.eventName}</h2>
+        <h2>{event.eventName || 'Event Name Not Available'}</h2>
         <p className="event-timeAndDate">{getFormattedDate()}</p>
-        <p className="place">{event.place}</p>
-        <p className="event-description">{event.description}</p>
-        <p className="ticket-info">
-          Tickets available: {numTicketsAvailable} (capacity: {event.capacity})
-        </p>
+        <p className="place">{event.place || 'Location Not Available'}</p>
+        <p className="event-description">{event.description || 'No Description Provided'}</p>
+        {numTicketsAvailable !== 'N/A' && (
+          <p className="ticket-info">
+            Tickets available: {numTicketsAvailable} (capacity: {event.capacity || 'N/A'})
+          </p>
+        )}
 
         <div className="event-actions">
-        {isBookable ? (
-          <button className="book-button" onClick={() => bookTicket()}>
+          {isBookable ? (
+            <button className="book-button" onClick={bookTicket}>
               Book Ticket
             </button>
-        ) : (
-          <button className="sold-out-button">Sold Out!</button>
-        )}
-</div>
+          ) : (
+            <button className="sold-out-button" disabled>
+              Sold Out!
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

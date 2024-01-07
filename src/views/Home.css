@@ -4,7 +4,6 @@
     height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern Font */
     color: #333;
-    overflow: hidden; /* Prevents scrolling */
 }
 
 /* Sidebar Styling */

@@ -42,7 +42,7 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-01-06T22:51:42.631Z",
+      "lastPushTimeStamp": "2024-01-07T21:22:40.937Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apincceventplanner"
@@ -88,7 +88,7 @@
         "IdentityPoolName": "nccauthIdentityPool__dev",
         "UserPoolName": "nccauthUserPool"
       },
-      "lastPushTimeStamp": "2024-01-06T22:51:37.268Z",
+      "lastPushTimeStamp": "2024-01-07T21:22:40.941Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/nccauth-cloudformation-template.json",
         "logicalId": "authnccauth"
@@ -112,7 +112,7 @@
       "output": {
         "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_sGpLq2jA5-adminsGroupRole"
       },
-      "lastPushTimeStamp": "2024-01-06T22:51:37.288Z",
+      "lastPushTimeStamp": "2024-01-07T21:22:45.787Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "logicalId": "authuserPoolGroups"
@@ -128,7 +128,7 @@
         "BucketName": "myeventplannerbucket02804-dev",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2024-01-06T22:51:37.298Z",
+      "lastPushTimeStamp": "2024-01-07T21:22:45.845Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageEventImages"
