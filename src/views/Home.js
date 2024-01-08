@@ -25,16 +25,6 @@ const menuItems = [
         iconName: 'mdi-calendar-arrow-left',
         methodName: 'showAllPastEvents',
     },
-    {
-        menuText: 'My Tickets',
-        iconName: 'mdi-ticket',
-        methodName: 'showMyTickets',
-    },
-    {
-        menuText: 'My Planned Events',
-        iconName: 'mdi-calendar-edit',
-        methodName: 'showMyPlannedEvents',
-    },
 ];
 
 
@@ -70,12 +60,6 @@ const Home = () => {
             case 'showAllPastEvents':
                 showAllPastEvents();
                 break;
-            case 'showMyTickets':
-                showMyTickets();
-                break;
-            case 'showMyPlannedEvents':
-                showMyPlannedEvents();
-                break;
             default:
                 break;
         }
@@ -83,30 +67,31 @@ const Home = () => {
 
     const showAllUpcomingEvents = async () => {
         setCurrentEventsView('All Upcoming Events');
-        
+
         try {
             const results = await API.graphql(graphqlOperation(listEvents, {
-              filter: { timeAndDate: { gt: new Date().toISOString(), }, }, }));
-        
+                filter: { timeAndDate: { gt: new Date().toISOString(), }, }, }));
+
             let events = results.data.listEvents.items;
             // const mockEvents = await listMockEvents();
             // console.log('Mock Events:', mockEvents);
             events.sort((a, b) => {
-              const astart = new Date(a.timeAndDate);
-              const bstart = new Date(b.timeAndDate);
-              return astart - bstart;
+                const astart = new Date(a.timeAndDate);
+                const bstart = new Date(b.timeAndDate);
+                return astart - bstart;
             });
-        
+
             setEvents(events);
             console.log('Updated Events State:', events);
-        
+
             await getSecureImageUrls();
-            
-        
-          } catch(err) {
+
+
+        } catch(err) {
             console.log("Error retrieving events: ", err)
-          }
+        }
     };
+
 
     const showAllPastEvents = async () => {
         setCurrentEventsView('All Past Events');
@@ -140,15 +125,7 @@ const Home = () => {
             console.log("Error retrieving past events: ", err);
         }
     };
-    
 
-    const showMyTickets = () => {
-        setCurrentEventsView('My Tickets');
-    };
-
-    const showMyPlannedEvents = () => { 
-        setCurrentEventsView('My Planned Events');
-    };
 
     const adminTools = () => {
         setCurrentEventsView('Admin Tools');
