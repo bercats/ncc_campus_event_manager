@@ -3,6 +3,9 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
+    "aws_appsync_graphqlEndpoint": "https://fkvx4x2mwvfezak7lu76nvtidq.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_appsync_region": "us-east-1",
+    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
     "aws_cognito_identity_pool_id": "us-east-1:3aaf4d32-d7a3-46dc-8043-e043b733db7a",
     "aws_cognito_region": "us-east-1",
     "aws_user_pools_id": "us-east-1_sGpLq2jA5",
@@ -29,9 +32,6 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_appsync_graphqlEndpoint": "https://fkvx4x2mwvfezak7lu76nvtidq.appsync-api.us-east-1.amazonaws.com/graphql",
-    "aws_appsync_region": "us-east-1",
-    "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
     "aws_user_files_s3_bucket": "myeventplannerbucket02804-dev",
     "aws_user_files_s3_bucket_region": "us-east-1"
 };

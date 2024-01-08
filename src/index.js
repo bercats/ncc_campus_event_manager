@@ -24,6 +24,7 @@ const formFields = {
     },
 }
 
+
 ReactDOM.render(
     <React.StrictMode>
         <Authenticator formFields={formFields}>

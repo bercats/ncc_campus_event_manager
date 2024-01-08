@@ -9,12 +9,10 @@ import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { API } from "aws-amplify";
-import { getEvent } from "../graphql/queries";
-import { updateEvent } from "../graphql/mutations";
-export default function EventUpdateForm(props) {
+import { createEvent } from "../graphql/mutations";
+export default function CreateEvent2(props) {
   const {
-    id: idProp,
-    event: eventModelProp,
+    clearOnSuccess = true,
     onSuccess,
     onError,
     onSubmit,
@@ -55,39 +53,20 @@ export default function EventUpdateForm(props) {
   const [seatsLeft, setSeatsLeft] = React.useState(initialValues.seatsLeft);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = eventRecord
-      ? { ...initialValues, ...eventRecord }
-      : initialValues;
-    setEventId(cleanValues.eventId);
-    setTimeAndDate(cleanValues.timeAndDate);
-    setEventName(cleanValues.eventName);
-    setEventPoster(cleanValues.eventPoster);
-    setPlace(cleanValues.place);
-    setPrice(cleanValues.price);
-    setCapacity(cleanValues.capacity);
-    setEventPlanner(cleanValues.eventPlanner);
-    setDescription(cleanValues.description);
-    setSeatsLeft(cleanValues.seatsLeft);
+    setEventId(initialValues.eventId);
+    setTimeAndDate(initialValues.timeAndDate);
+    setEventName(initialValues.eventName);
+    setEventPoster(initialValues.eventPoster);
+    setPlace(initialValues.place);
+    setPrice(initialValues.price);
+    setCapacity(initialValues.capacity);
+    setEventPlanner(initialValues.eventPlanner);
+    setDescription(initialValues.description);
+    setSeatsLeft(initialValues.seatsLeft);
     setErrors({});
   };
-  const [eventRecord, setEventRecord] = React.useState(eventModelProp);
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? (
-            await API.graphql({
-              query: getEvent.replaceAll("__typename", ""),
-              variables: { id: idProp },
-            })
-          )?.data?.getEvent
-        : eventModelProp;
-      setEventRecord(record);
-    };
-    queryData();
-  }, [idProp, eventModelProp]);
-  React.useEffect(resetStateValues, [eventRecord]);
   const validations = {
-    eventId: [{ type: "Required" }],
+    eventId: [],
     timeAndDate: [{ type: "Required" }],
     eventName: [{ type: "Required" }],
     eventPoster: [],
@@ -144,13 +123,13 @@ export default function EventUpdateForm(props) {
           eventId,
           timeAndDate,
           eventName,
-          eventPoster: eventPoster ?? null,
+          eventPoster,
           place,
-          price: price ?? null,
-          capacity: capacity ?? null,
+          price,
+          capacity,
           eventPlanner,
-          description: description ?? null,
-          seatsLeft: seatsLeft ?? null,
+          description,
+          seatsLeft,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -181,16 +160,18 @@ export default function EventUpdateForm(props) {
             }
           });
           await API.graphql({
-            query: updateEvent.replaceAll("__typename", ""),
+            query: createEvent.replaceAll("__typename", ""),
             variables: {
               input: {
-                id: eventRecord.id,
                 ...modelFields,
               },
             },
           });
           if (onSuccess) {
             onSuccess(modelFields);
+          }
+          if (clearOnSuccess) {
+            resetStateValues();
           }
         } catch (err) {
           if (onError) {
@@ -199,20 +180,16 @@ export default function EventUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "EventUpdateForm")}
+      {...getOverrideProps(overrides, "CreateEvent2")}
       {...rest}
     >
       <TextField
         label="Event id"
-        isRequired={true}
+        isRequired={false}
         isReadOnly={false}
-        type="number"
-        step="any"
         value={eventId}
         onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
+          let { value } = e.target;
           if (onChange) {
             const modelFields = {
               eventId: value,
@@ -555,14 +532,13 @@ export default function EventUpdateForm(props) {
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children="Reset"
+          children="Clear"
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || eventModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -572,10 +548,7 @@ export default function EventUpdateForm(props) {
             children="Submit"
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || eventModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>

@@ -1,11 +1,19 @@
 // Home.js
 import React, { useEffect, useState } from 'react';
-import { Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
+import {Amplify, Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
 import { listEvents} from "../graphql/queries";
 import { listMockEvents } from '../mock';
 import EventCard from "../ui-components/EventCard";
 import './Home.css';
-import { deleteAllRecords, addMockRecords } from "../mock.js"
+import { deleteAllRecords, addMockRecords } from "../mock2.js"
+import { createEvent } from '../graphql/mutations';
+import { EventCreateForm } from '../ui-components';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import amplifyconfig from '../amplifyconfiguration.json';
+//const client = generateClient()
+Amplify.configure(amplifyconfig);
+
 const menuItems = [
     {
         menuText: 'All Upcoming Events',
@@ -17,23 +25,16 @@ const menuItems = [
         iconName: 'mdi-calendar-arrow-left',
         methodName: 'showAllPastEvents',
     },
-    {
-        menuText: 'My Tickets',
-        iconName: 'mdi-ticket',
-        methodName: 'showMyTickets',
-    },
-    {
-        menuText: 'My Planned Events',
-        iconName: 'mdi-calendar-edit',
-        methodName: 'showMyPlannedEvents',
-    },
 ];
+
+
 
 const Home = () => {
     const [currentEventsView, setCurrentEventsView] = useState('All Upcoming Events');
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminDialog, setAdminDialog] = useState(false);
     const [events, setEvents] = useState([]);
+    const [showEventCreateForm, setShowEventCreateForm] = useState(false);
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -49,7 +50,7 @@ const Home = () => {
             }
         };
         checkAdmin();
-    }, []);
+    }, [isAdmin]);
 
     const callMethod = (methodName) => {
         switch (methodName) {
@@ -59,12 +60,6 @@ const Home = () => {
             case 'showAllPastEvents':
                 showAllPastEvents();
                 break;
-            case 'showMyTickets':
-                showMyTickets();
-                break;
-            case 'showMyPlannedEvents':
-                showMyPlannedEvents();
-                break;
             default:
                 break;
         }
@@ -72,42 +67,65 @@ const Home = () => {
 
     const showAllUpcomingEvents = async () => {
         setCurrentEventsView('All Upcoming Events');
-        
+
         try {
             const results = await API.graphql(graphqlOperation(listEvents, {
-              filter: { event_datetime_start: { gt: new Date().toISOString(), }, }, }));
-        
+                filter: { timeAndDate: { gt: new Date().toISOString(), }, }, }));
+
             let events = results.data.listEvents.items;
-            const mockEvents = await listMockEvents();
-            console.log('Mock Events:', mockEvents);
-            mockEvents.sort((a, b) => {
-              const astart = new Date(a.event_datetime_start);
-              const bstart = new Date(b.event_datetime_start);
-              return astart - bstart;
+            // const mockEvents = await listMockEvents();
+            // console.log('Mock Events:', mockEvents);
+            events.sort((a, b) => {
+                const astart = new Date(a.timeAndDate);
+                const bstart = new Date(b.timeAndDate);
+                return astart - bstart;
             });
-        
-            setEvents(mockEvents);
+
+            setEvents(events);
             console.log('Updated Events State:', events);
-        
+
             await getSecureImageUrls();
-            
-        
-          } catch(err) {
+
+
+        } catch(err) {
             console.log("Error retrieving events: ", err)
-          }
+        }
     };
 
-    const showAllPastEvents = () => {
+
+    const showAllPastEvents = async () => {
         setCurrentEventsView('All Past Events');
+        try {
+            // Use the current date and time as the reference point
+            const currentDate = new Date();
+    
+            // Adjust the GraphQL query to fetch events with timeAndDate less than the current date
+            const results = await API.graphql(graphqlOperation(listEvents, {
+                filter: {
+                    timeAndDate: {
+                        lt: currentDate.toISOString(),
+                    },
+                },
+            }));
+    
+            let pastEvents = results.data.listEvents.items;
+            pastEvents.sort((a, b) => {
+                const aDate = new Date(a.timeAndDate);
+                const bDate = new Date(b.timeAndDate);
+                return bDate - aDate; // Sorting in descending order (most recent past events first)
+            });
+    
+            setEvents(pastEvents);
+            console.log('Updated Events State with Past Events:', pastEvents);
+    
+            // Optionally, update the event URLs if needed
+            // await getSecureImageUrls(pastEvents);
+    
+        } catch (err) {
+            console.log("Error retrieving past events: ", err);
+        }
     };
 
-    const showMyTickets = () => {
-        setCurrentEventsView('My Tickets');
-    };
-
-    const showMyPlannedEvents = () => {
-        setCurrentEventsView('My Planned Events');
-    };
 
     const adminTools = () => {
         setCurrentEventsView('Admin Tools');
@@ -131,6 +149,12 @@ const Home = () => {
 
         // Call the adminTools function
         adminTools();
+    };
+
+    const toggleEventCreateForm = () => {
+        setShowEventCreateForm(!showEventCreateForm);
+        
+        return (<EventCreateForm/>);
     };
     
     const getSecureImageUrls = async (events) => { // Modify function signature
@@ -171,6 +195,27 @@ const Home = () => {
                             <span>{item.menuText}</span>
                         </div>
                     ))}
+                    {isAdmin && (
+                    <div className="menu-item" onClick={() => toggleEventCreateForm()}>
+                        <i className="fas fa-plus"></i>
+                        
+                        <Popup name="popup" trigger={<button className="button"> Create Event </button>}  modal>
+                        <EventCreateForm
+                            onSubmit={(fields) => {
+                                // Example function to trim all string inputs
+                                const updatedFields = {}
+                                Object.keys(fields).forEach(key => {
+                                    if (typeof fields[key] === 'string') {
+                                        updatedFields[key] = fields[key].trim()
+                                    } else {
+                                        updatedFields[key] = fields[key]
+                                    }
+                                })
+                                return updatedFields
+                            }}
+                        />
+                        </Popup>
+                    </div>)}
             </div>
             <div className="content">
                 <div className="app-bar">
@@ -186,6 +231,7 @@ const Home = () => {
                         <div key={event.id}>
                             <EventCard event={event} />
                         </div>
+
                     ))}
                 </div>
             </div>

@@ -8,9 +8,8 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { generateClient } from "aws-amplify/api";
+import { API } from "aws-amplify";
 import { createEvent } from "../graphql/mutations";
-const client = generateClient();
 export default function EventCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -32,6 +31,7 @@ export default function EventCreateForm(props) {
     capacity: "",
     eventPlanner: "",
     description: "",
+    seatsLeft: "",
   };
   const [eventId, setEventId] = React.useState(initialValues.eventId);
   const [timeAndDate, setTimeAndDate] = React.useState(
@@ -50,6 +50,7 @@ export default function EventCreateForm(props) {
   const [description, setDescription] = React.useState(
     initialValues.description
   );
+  const [seatsLeft, setSeatsLeft] = React.useState(initialValues.seatsLeft);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setEventId(initialValues.eventId);
@@ -61,6 +62,7 @@ export default function EventCreateForm(props) {
     setCapacity(initialValues.capacity);
     setEventPlanner(initialValues.eventPlanner);
     setDescription(initialValues.description);
+    setSeatsLeft(initialValues.seatsLeft);
     setErrors({});
   };
   const validations = {
@@ -73,6 +75,7 @@ export default function EventCreateForm(props) {
     capacity: [],
     eventPlanner: [{ type: "Required" }],
     description: [],
+    seatsLeft: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -126,6 +129,7 @@ export default function EventCreateForm(props) {
           capacity,
           eventPlanner,
           description,
+          seatsLeft,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -155,7 +159,7 @@ export default function EventCreateForm(props) {
               modelFields[key] = null;
             }
           });
-          await client.graphql({
+          await API.graphql({
             query: createEvent.replaceAll("__typename", ""),
             variables: {
               input: {
@@ -180,7 +184,12 @@ export default function EventCreateForm(props) {
       {...rest}
     >
       <TextField
-        label="Event id"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Event id</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={eventId}
@@ -197,6 +206,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventId ?? value;
@@ -212,7 +222,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "eventId")}
       ></TextField>
       <TextField
-        label="Time and date"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Time and date</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         type="datetime-local"
@@ -231,6 +246,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.timeAndDate ?? value;
@@ -246,7 +262,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "timeAndDate")}
       ></TextField>
       <TextField
-        label="Event name"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Event name</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={eventName}
@@ -263,6 +284,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventName ?? value;
@@ -295,6 +317,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventPoster ?? value;
@@ -310,7 +333,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "eventPoster")}
       ></TextField>
       <TextField
-        label="Place"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Place</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={place}
@@ -327,6 +355,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.place ?? value;
@@ -363,6 +392,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.price ?? value;
@@ -399,6 +429,7 @@ export default function EventCreateForm(props) {
               capacity: value,
               eventPlanner,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.capacity ?? value;
@@ -414,7 +445,12 @@ export default function EventCreateForm(props) {
         {...getOverrideProps(overrides, "capacity")}
       ></TextField>
       <TextField
-        label="Event planner"
+        label={
+          <span style={{ display: "inline-flex" }}>
+            <span>Event planner</span>
+            <span style={{ color: "red" }}>*</span>
+          </span>
+        }
         isRequired={true}
         isReadOnly={false}
         value={eventPlanner}
@@ -431,6 +467,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner: value,
               description,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.eventPlanner ?? value;
@@ -463,6 +500,7 @@ export default function EventCreateForm(props) {
               capacity,
               eventPlanner,
               description: value,
+              seatsLeft,
             };
             const result = onChange(modelFields);
             value = result?.description ?? value;
@@ -476,6 +514,43 @@ export default function EventCreateForm(props) {
         errorMessage={errors.description?.errorMessage}
         hasError={errors.description?.hasError}
         {...getOverrideProps(overrides, "description")}
+      ></TextField>
+      <TextField
+        label="Seats left"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={seatsLeft}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              eventId,
+              timeAndDate,
+              eventName,
+              eventPoster,
+              place,
+              price,
+              capacity,
+              eventPlanner,
+              description,
+              seatsLeft: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.seatsLeft ?? value;
+          }
+          if (errors.seatsLeft?.hasError) {
+            runValidationTasks("seatsLeft", value);
+          }
+          setSeatsLeft(value);
+        }}
+        onBlur={() => runValidationTasks("seatsLeft", seatsLeft)}
+        errorMessage={errors.seatsLeft?.errorMessage}
+        hasError={errors.seatsLeft?.hasError}
+        {...getOverrideProps(overrides, "seatsLeft")}
       ></TextField>
       <Flex
         justifyContent="space-between"

@@ -21,7 +21,7 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type EventUpdateFormInputValues = {
+export declare type CreateEvent2InputValues = {
     eventId?: number;
     timeAndDate?: string;
     eventName?: string;
@@ -33,7 +33,7 @@ export declare type EventUpdateFormInputValues = {
     description?: string;
     seatsLeft?: number;
 };
-export declare type EventUpdateFormValidationValues = {
+export declare type CreateEvent2ValidationValues = {
     eventId?: ValidationFunction<number>;
     timeAndDate?: ValidationFunction<string>;
     eventName?: ValidationFunction<string>;
@@ -46,8 +46,8 @@ export declare type EventUpdateFormValidationValues = {
     seatsLeft?: ValidationFunction<number>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type EventUpdateFormOverridesProps = {
-    EventUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type CreateEvent2OverridesProps = {
+    CreateEvent2Grid?: PrimitiveOverrideProps<GridProps>;
     eventId?: PrimitiveOverrideProps<TextFieldProps>;
     timeAndDate?: PrimitiveOverrideProps<TextFieldProps>;
     eventName?: PrimitiveOverrideProps<TextFieldProps>;
@@ -59,15 +59,14 @@ export declare type EventUpdateFormOverridesProps = {
     description?: PrimitiveOverrideProps<TextFieldProps>;
     seatsLeft?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type EventUpdateFormProps = React.PropsWithChildren<{
-    overrides?: EventUpdateFormOverridesProps | undefined | null;
+export declare type CreateEvent2Props = React.PropsWithChildren<{
+    overrides?: CreateEvent2OverridesProps | undefined | null;
 } & {
-    id?: string;
-    event?: any;
-    onSubmit?: (fields: EventUpdateFormInputValues) => EventUpdateFormInputValues;
-    onSuccess?: (fields: EventUpdateFormInputValues) => void;
-    onError?: (fields: EventUpdateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: EventUpdateFormInputValues) => EventUpdateFormInputValues;
-    onValidate?: EventUpdateFormValidationValues;
+    clearOnSuccess?: boolean;
+    onSubmit?: (fields: CreateEvent2InputValues) => CreateEvent2InputValues;
+    onSuccess?: (fields: CreateEvent2InputValues) => void;
+    onError?: (fields: CreateEvent2InputValues, errorMessage: string) => void;
+    onChange?: (fields: CreateEvent2InputValues) => CreateEvent2InputValues;
+    onValidate?: CreateEvent2ValidationValues;
 } & React.CSSProperties>;
-export default function EventUpdateForm(props: EventUpdateFormProps): React.ReactElement;
+export default function CreateEvent2(props: CreateEvent2Props): React.ReactElement;

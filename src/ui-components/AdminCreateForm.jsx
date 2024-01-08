@@ -8,9 +8,8 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { generateClient } from "aws-amplify/api";
+import { API } from "aws-amplify";
 import { createAdmin } from "../graphql/mutations";
-const client = generateClient();
 export default function AdminCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -95,7 +94,7 @@ export default function AdminCreateForm(props) {
               modelFields[key] = null;
             }
           });
-          await client.graphql({
+          await API.graphql({
             query: createAdmin.replaceAll("__typename", ""),
             variables: {
               input: {
