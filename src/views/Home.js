@@ -122,7 +122,8 @@ const Home = () => {
             console.log('Updated Events State with Past Events:', pastEvents);
     
             // Optionally, update the event URLs if needed
-            // await getSecureImageUrls(pastEvents);
+            pastEvents=await getSecureImageUrls(pastEvents);
+            setEvents(pastEvents);
     
         } catch (err) {
             console.log("Error retrieving past events: ", err);
@@ -198,8 +199,8 @@ const Home = () => {
                 if (event.eventPoster) {
                     try {
                         const preSignedImageURL = await Storage.get(event.eventPoster, {
-                            level: "protected",               // defaults to `public`
-                            identityId: event.student_id,     // id of another user, if `level: protected`
+                            level: "public",               // defaults to `public`
+                            //identityId: event.student_id,     // id of another user, if `level: protected`
                             download: false,                  // defaults to false
                             contentType: "image/*",           // set return content type, eg "text/html"
                         });

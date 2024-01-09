@@ -97,7 +97,7 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
     try {
       let storageKey = '';
       const resultKey = await Storage.put(imageFile.name, imageFile, {
-        level: 'protected',
+        level: 'public',
       });
       storageKey = resultKey.key; // Adjust according to your Storage API's return structure
       console.log('Uploaded image successfully: ' + storageKey);
