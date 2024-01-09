@@ -144,10 +144,46 @@ const Home = () => {
         setAdminDialog(false);
     };
 
-    const handleAdminDialogProceed = () => {
+    const handleAdminDialogProceed = async () => {
         console.log('Proceeding with adminTools');
-        adminTools();
+        const mockEvents = generateMockEvents(10);
+
+        try {
+            const responses = await Promise.all(mockEvents.map(event => API.graphql(graphqlOperation(createEvent, { input: event }))));
+            console.log('GraphQL responses:', responses);
+            setAdminDialog(false);
+            await showAllUpcomingEvents();
+        } catch (error) {
+            console.error('Error performing adminTools:', error);
+        }
     };
+
+    const generateMockEvents = (count) => {
+        const mockEvents = [];
+
+        for (let i = 0; i < count; i++) {
+            const mockEvent = {
+                eventName: `Mock Event ${i + 1}`,
+                timeAndDate: new Date().toISOString(),
+                eventPoster: "test",
+                place: `Mock Place ${i + 1}`,
+                description: `This is a mock event description for Event ${i + 1}.`,
+                capacity: Math.floor(Math.random() * 100) + 1, // Random capacity between 1 and 100
+                seatsLeft: Math.floor(Math.random() * 100) + 1, // Random seatsLeft between 1 and 100
+                price: (Math.random() * 100).toFixed(2), // Random price between 0 and 100
+                eventPlanner: "test",
+                createdAt: "Test",
+                updateEvent: getAdmin,
+                __typename: "test"
+            };
+
+            mockEvents.push(mockEvent);
+        }
+
+        return mockEvents;
+    };
+
+
 
     const editEvent = async (event) => {
         setShowUpdateForm(!showUpdateForm)
@@ -163,7 +199,8 @@ const Home = () => {
                     description: event.description,
                     id: event.id,
                     createdAt: event.createdAt,
-                    updatedAt: getAdmin}}));
+                    updatedAt: getAdmin,
+                    __typename: event.__typename}}));
 
             await showAllUpcomingEvents();
         } catch (err) {

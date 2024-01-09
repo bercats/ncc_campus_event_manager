@@ -97,7 +97,6 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
                           onClose={() => setShowEditForm(false)}
                           // Add other props you need to pass to EventUpdateForm
                       />
-                      <button onClick={() => onEdit(event)}>Submit</button>
                     </div>
                   </ScrollView>
                 </Popup>
