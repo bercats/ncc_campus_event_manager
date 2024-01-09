@@ -42,12 +42,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-01-07T21:22:40.937Z",
+      "lastPushTimeStamp": "2024-01-09T07:28:39.548Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apincceventplanner"
       },
-      "lastPushDirHash": "puNGCUnu4vvYEPOAoG44FQWC4j0="
+      "lastPushDirHash": "KjKnnh3ZMal2cx8rNwwdqT3RKFg="
     }
   },
   "auth": {
@@ -88,11 +88,12 @@
         "IdentityPoolName": "nccauthIdentityPool__dev",
         "UserPoolName": "nccauthUserPool"
       },
-      "lastPushTimeStamp": "2024-01-07T21:22:40.941Z",
+      "lastPushTimeStamp": "2024-01-09T07:27:58.699Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/nccauth-cloudformation-template.json",
         "logicalId": "authnccauth"
-      }
+      },
+      "lastPushDirHash": "n/UqDK+0XVi5MYC4Wg9YnZ6Hj3I="
     },
     "userPoolGroups": {
       "dependsOn": [
@@ -112,7 +113,7 @@
       "output": {
         "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_sGpLq2jA5-adminsGroupRole"
       },
-      "lastPushTimeStamp": "2024-01-07T21:22:45.787Z",
+      "lastPushTimeStamp": "2024-01-09T07:28:01.928Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "logicalId": "authuserPoolGroups"
@@ -128,11 +129,12 @@
         "BucketName": "myeventplannerbucket02804-dev",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2024-01-07T21:22:45.845Z",
+      "lastPushTimeStamp": "2024-01-09T07:28:02.025Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageEventImages"
-      }
+      },
+      "lastPushDirHash": "h3UflX3zOEB6OxeOWOCiK9lE/F0="
     }
   }
 }

@@ -1,12 +1,1 @@
-{
-  "AppSyncApiName": "ncceventplanner",
-  "DynamoDBBillingMode": "PAY_PER_REQUEST",
-  "DynamoDBEnableServerSideEncryption": false,
-  "AuthCognitoUserPoolId": {
-    "Fn::GetAtt": [
-      "authnccauth",
-      "Outputs.UserPoolId"
-    ]
-  },
-  "AuthModeLastUpdated": "2024-01-06T19:28:03.743Z"
-}
+{}

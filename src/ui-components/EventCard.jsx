@@ -44,9 +44,10 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
   }
 
   return (
-      <div className="event-card">
-        {event.eventPoster && <img src={event.eventPoster} alt="Event" className="event-image" />}
-        <div className="event-details">
+    <div className="event-card" style={{display: "grid" , alignItems: "center"}} >
+
+        
+        <div className="event-details" style={{alignSelf:"left", maxHeight:"100%",maxWidth: "100%"}}>
           <h2>{event.eventName || 'Event Name Not Available'}</h2>
           <p className="event-timeAndDate">{getFormattedDate()}</p>
           <p className="place">{event.place || 'Location Not Available'}</p>
@@ -103,6 +104,9 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
             )}
           </div>
         </div>
+        <div style={{alignSelf:"right"}}>{event.eventPoster && <img src={event.url} alt="Event" className="event-image" width="300px"/>} 
+        </div>
+        
       </div>
   );
 };
