@@ -55,7 +55,8 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
           <p className="ticket-info">
             Tickets available: {event.seatsLeft || '0'} / {parsedCapacity}
           </p>
-            <p className="price">Price: {price}₺</p>
+          <span className="event-price">{event.price || 'Free'}</span>
+          <p className="seats">{event.seatsLeft || 'No seats available'}</p>
           <div className="event-actions">
             {isBookable ? (
                 <button className="book-button" onClick={bookTicket}>
@@ -66,6 +67,7 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
                   Sold Out!
                 </button>
             )}
+            
             {isAdmin && (
                 <div className="card-actions">
                   <button onClick={() => setShowEditForm(true)}>Edit</button>

@@ -118,7 +118,6 @@ const Home = () => {
                 return bDate - aDate; // Sorting in descending order (most recent past events first)
             });
     
-            setEvents(pastEvents);
             console.log('Updated Events State with Past Events:', pastEvents);
     
             // Optionally, update the event URLs if needed
@@ -164,6 +163,7 @@ const Home = () => {
                     capacity: event.capacity,
                     eventPlanner: event.eventPlanner,
                     description: event.description,
+                    seatsLeft: event.seatsLeft,
                     id: event.id,
                     createdAt: event.createdAt,
                     updatedAt: getAdmin,
@@ -271,6 +271,7 @@ const Home = () => {
                                 onEdit={(event) => editEvent(event)}
                                 onDelete={(id) => ondeleteEvent(id)}
                             />
+                            <p className="event-card-seats-left">Seats Left: {event.seatsLeft}</p>
                         </div>
                     ))}
                 </div>
