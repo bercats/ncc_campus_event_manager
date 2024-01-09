@@ -8,8 +8,9 @@
 import * as React from "react";
 import { Button, Flex, Grid, TextField, DropZone, Text, VisuallyHidden, ScrollView} from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import { createEvent } from "../graphql/mutations";
+import { Label } from "reactstrap";
 export default function EventCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -40,8 +41,7 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
   const [eventPoster, setEventPoster] = React.useState(initialValues.eventPoster);
   const [files, setFiles] = React.useState([]);
   const hiddenInput = React.useRef(null);
-  const [useGenericImage, setUseGenericImage] = React.useState(true); // Example value
-  const [imageFile, setImageFile] = React.useState(null)
+  const [imageFile, setImageFile] = React.useState(null);
   const [place, setPlace] = React.useState(initialValues.place);
   const [price, setPrice] = React.useState(initialValues.price);
   const [capacity, setCapacity] = React.useState(initialValues.capacity);
@@ -60,6 +60,7 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
     setEventPlanner(initialValues.eventPlanner);
     setDescription(initialValues.description);
     setSeatsLeft(initialValues.seatsLeft);
+
     setErrors({});
   };
   const validations = {
@@ -92,29 +93,16 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
     return validationResponse;
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (imageFile) => {
     try {
       let storageKey = '';
-
-      if (useGenericImage) {
-        const key = 'generic.jpeg';
-        const res = await fetch('./generic.jpeg'); // Assuming the image is in the public directory
-        const imageBlob = await res.arrayBuffer();
-        const resultKey = await Storage.put(key, imageBlob, {
-          level: 'protected',
-          contentType: 'image/*',
-        });
-        storageKey = resultKey.key; // Adjust according to your Storage API's return structure
-      } else {
-        const resultKey = await Storage.put(imageFile.name, imageFile, {
-          level: 'protected',
-        });
-        storageKey = resultKey.key; // Adjust according to your Storage API's return structure
-      }
-      
+      const resultKey = await Storage.put(imageFile.name, imageFile, {
+        level: 'protected',
+      });
+      storageKey = resultKey.key; // Adjust according to your Storage API's return structure
+      setEventPoster(storageKey);
       // Handle successful upload logic here if necessary
     } catch (error) {
-      setUploadFailed(true);
       console.error('Upload failed:', error);
     }
   };
@@ -330,65 +318,43 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
         hasError={errors.eventName?.hasError}
         {...getOverrideProps(overrides, "eventName")}
       ></TextField>
-      <TextField
-        label="Event poster"
-        isRequired={false}
-        isReadOnly={false}
-        value={eventPoster}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              eventId,
-              timeAndDate,
-              eventName,
-              eventPoster: value,
-              place,
-              price,
-              capacity,
-              eventPlanner,
-              description,
-              seatsLeft,
-            };
-            const result = onChange(modelFields);
-            value = result?.eventPoster ?? value;
-          }
-          if (errors.eventPoster?.hasError) {
-            runValidationTasks("eventPoster", value);
-          }
-          setEventPoster(value);
-        }}
-        onBlur={() => runValidationTasks("eventPoster", eventPoster)}
-        errorMessage={errors.eventPoster?.errorMessage}
-        hasError={errors.eventPoster?.hasError}
-        {...getOverrideProps(overrides, "eventPoster")}
-      ></TextField>
-        <DropZone
-            acceptedFileTypes={acceptedFileTypes}
-            onDropComplete={({ acceptedFiles, rejectedFiles }) => {
-            setFiles(acceptedFiles);
-            }}
-        >
-            <Flex direction="column" alignItems="center">
-            <Text>Drag images here or</Text>
-            <Button size="small" onClick={() => hiddenInput.current.click()}>
-                Browse
-            </Button>
-            </Flex>
-            <VisuallyHidden>
-            <input
-                type="file"
-                tabIndex={-1}
-                ref={hiddenInput}
-                onChange={onFilePickerChange}
-                multiple={true}
-                accept={acceptedFileTypes.join(',')}
-            />
-            </VisuallyHidden>
+      <Label>Event poster</Label>
+      <DropZone
+          label="Event poster"
+          acceptedFileTypes={acceptedFileTypes}
+          onDropComplete={({ acceptedFiles, rejectedFiles }) => {
+          setFiles(acceptedFiles);
+          }}
+      >
+          <Flex direction="column" alignItems="center">
+          <Text>Drag images here or</Text>
+          <Button size="small" onClick={() => hiddenInput.current.click()}>
+              Browse
+          </Button>
+          </Flex>
+          <VisuallyHidden>
+          <input
+              type="file"
+              tabIndex={-1}
+              ref={hiddenInput}
+              onChange={onFilePickerChange}
+              multiple={true}
+              accept={acceptedFileTypes.join(',')}
+          />
+          </VisuallyHidden>
         </DropZone>
         {files.map((file) => (
         <Text key={file.name}>{file.name}</Text>
         ))}
+      <Button
+            children="Upload Photo"
+            type="submit"
+            variation="primary"
+            onClick={(event) => {
+              event.preventDefault();
+              handleUpload(files[0]);
+            }}
+          ></Button>
       <TextField
         label={
           <span style={{ display: "inline-flex" }}>
