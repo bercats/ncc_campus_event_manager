@@ -23,6 +23,7 @@ const EventCard = ({ event }) => {
     return `${day} ${month} ${year}, ${hours}:${minutes} ${amPm} - ${endHour}:00 ${amPm}`;
   };
 
+  /* Handle booking logic */
   return (
     <div className="event-card">
       <img src={event.url} alt="Event" className="event-image" />
@@ -38,8 +39,8 @@ const EventCard = ({ event }) => {
 
         <div className="event-actions">
           {isBookable ? (
-            <button className="book-button" onClick={() => /* Handle booking logic */}>
-              Book Ticket
+            <button className="book-button" onClick={function () {
+            }}>Book Ticket
             </button>
           ) : (
             <button className="sold-out-button">Sold Out!</button>

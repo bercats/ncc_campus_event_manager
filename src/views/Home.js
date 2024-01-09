@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import {Amplify, Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
 import { ScrollView } from '@aws-amplify/ui-react';
-import { listEvents} from "../graphql/queries";
-import { listMockEvents } from '../mock';
+import {getAdmin, listEvents} from "../graphql/queries";
 import EventCard from "../ui-components/EventCard";
 import './Home.css';
 import { deleteAllRecords, addMockRecords } from "../mock2.js"
-import { createEvent } from '../graphql/mutations';
 import  EventCreator from "../ui-components/EventCreator";
+import {createEvent, deleteEvent, updateEvent} from '../graphql/mutations';
+import {EventUpdateForm} from '../ui-components';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import amplifyconfig from '../amplifyconfiguration.json';
@@ -36,6 +36,8 @@ const Home = () => {
     const [adminDialog, setAdminDialog] = useState(false);
     const [events, setEvents] = useState([]);
     const [showEventCreateForm, setShowEventCreateForm] = useState(false);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [showMockDataAddedPopup, setShowMockDataAddedPopup] = useState(false);
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -127,29 +129,60 @@ const Home = () => {
         }
     };
 
-
-    const adminTools = () => {
-        setCurrentEventsView('Admin Tools');
-        deleteAllRecords();
-        addMockRecords();
-        setAdminDialog(false);
-    };
-
     const signOut = async () => {
         await Auth.signOut();
         // Redirect to sign-in page
     };
 
     const handleAdminDialogClose = () => {
+        setShowMockDataAddedPopup(false);
         setAdminDialog(false);
     };
 
-    const handleAdminDialogProceed = () => {
-        // Add your logic for adminTools
+    const handleAdminDialogProceed = async () => {
         console.log('Proceeding with adminTools');
+        try {
+            setShowMockDataAddedPopup(true);
+            await addMockRecords();
+            setAdminDialog(false);
+            await showAllUpcomingEvents();
+        } catch (error) {
+            console.error('Error performing adminTools:', error);
+        }
+    };
 
-        // Call the adminTools function
-        adminTools();
+    const editEvent = async (event) => {
+        setShowUpdateForm(!showUpdateForm)
+        try {
+            await API.graphql(graphqlOperation(updateEvent, {input: {eventId: event.eventId,
+                    timeAndDate: event.timeAndDate,
+                    eventName: event.eventName,
+                    eventPoster: event.poster,
+                    place: event.place,
+                    price: event.price,
+                    capacity: event.capacity,
+                    eventPlanner: event.eventPlanner,
+                    description: event.description,
+                    id: event.id,
+                    createdAt: event.createdAt,
+                    updatedAt: getAdmin,
+                    __typename: event.__typename}}));
+
+            await showAllUpcomingEvents();
+        } catch (err) {
+            console.error('Error deleting event:', err);
+        }
+        return (<EventUpdateForm/>);
+    };
+
+    const ondeleteEvent = async (eventId) => {
+        try {
+            await API.graphql(graphqlOperation(deleteEvent, { input: { id: eventId } }));
+
+            await showAllUpcomingEvents();
+        } catch (err) {
+            console.error('Error deleting event:', err);
+        }
     };
 
     const toggleEventCreateForm = () => {
@@ -229,24 +262,31 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="main-container">
-                    {/* This is where events will appear */}
-                    {events.map(event => (
-                        <div key={event.id}>
-                            <EventCard event={event} />
+                    {events.map((event) => (
+                        <div key={event.id} className="event-card-container">
+                            <EventCard
+                                event={event}
+                                isAdmin={isAdmin}
+                                onEdit={(event) => editEvent(event)}
+                                onDelete={(id) => ondeleteEvent(id)}
+                            />
                         </div>
-
                     ))}
                 </div>
             </div>
-
-            {/* Admin Dialog */}
             {adminDialog && (
                 <div className="admin-dialog">
-                    <p>Warning: This command will delete ALL the data in the database, and then add some mock (fake) data.</p>
+                    <p>Warning: This command will add some 10 mock (fake) data.</p>
                     <button onClick={handleAdminDialogProceed}>Proceed</button>
                     <button onClick={handleAdminDialogClose}>Cancel</button>
                 </div>
             )}
+            <Popup open={showMockDataAddedPopup} onClose={handleAdminDialogClose} modal closeOnDocumentClick>
+                <div>
+                    <p>10 mock data entries have been added.</p>
+                    <button onClick={handleAdminDialogClose}>OK</button>
+                </div>
+            </Popup>
         </div>
     );
 };
