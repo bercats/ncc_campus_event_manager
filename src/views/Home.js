@@ -36,6 +36,7 @@ const Home = () => {
     const [events, setEvents] = useState([]);
     const [showEventCreateForm, setShowEventCreateForm] = useState(false);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
+    const [showMockDataAddedPopup, setShowMockDataAddedPopup] = useState(false);
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -127,63 +128,27 @@ const Home = () => {
         }
     };
 
-
-    const adminTools = () => {
-        setCurrentEventsView('Admin Tools');
-        deleteAllRecords();
-        addMockRecords();
-        setAdminDialog(false);
-    };
-
     const signOut = async () => {
         await Auth.signOut();
         // Redirect to sign-in page
     };
 
     const handleAdminDialogClose = () => {
+        setShowMockDataAddedPopup(false);
         setAdminDialog(false);
     };
 
     const handleAdminDialogProceed = async () => {
         console.log('Proceeding with adminTools');
-        const mockEvents = generateMockEvents(10);
-
         try {
-            const responses = await Promise.all(mockEvents.map(event => API.graphql(graphqlOperation(createEvent, { input: event }))));
-            console.log('GraphQL responses:', responses);
+            setShowMockDataAddedPopup(true);
+            await addMockRecords();
             setAdminDialog(false);
             await showAllUpcomingEvents();
         } catch (error) {
             console.error('Error performing adminTools:', error);
         }
     };
-
-    const generateMockEvents = (count) => {
-        const mockEvents = [];
-
-        for (let i = 0; i < count; i++) {
-            const mockEvent = {
-                eventName: `Mock Event ${i + 1}`,
-                timeAndDate: new Date().toISOString(),
-                eventPoster: "test",
-                place: `Mock Place ${i + 1}`,
-                description: `This is a mock event description for Event ${i + 1}.`,
-                capacity: Math.floor(Math.random() * 100) + 1, // Random capacity between 1 and 100
-                seatsLeft: Math.floor(Math.random() * 100) + 1, // Random seatsLeft between 1 and 100
-                price: (Math.random() * 100).toFixed(2), // Random price between 0 and 100
-                eventPlanner: "test",
-                createdAt: "Test",
-                updateEvent: getAdmin,
-                __typename: "test"
-            };
-
-            mockEvents.push(mockEvent);
-        }
-
-        return mockEvents;
-    };
-
-
 
     const editEvent = async (event) => {
         setShowUpdateForm(!showUpdateForm)
@@ -308,15 +273,19 @@ const Home = () => {
                     ))}
                 </div>
             </div>
-
-            {/* Admin Dialog */}
             {adminDialog && (
                 <div className="admin-dialog">
-                    <p>Warning: This command will delete ALL the data in the database, and then add some mock (fake) data.</p>
+                    <p>Warning: This command will add some 10 mock (fake) data.</p>
                     <button onClick={handleAdminDialogProceed}>Proceed</button>
                     <button onClick={handleAdminDialogClose}>Cancel</button>
                 </div>
             )}
+            <Popup open={showMockDataAddedPopup} onClose={handleAdminDialogClose} modal closeOnDocumentClick>
+                <div>
+                    <p>10 mock data entries have been added.</p>
+                    <button onClick={handleAdminDialogClose}>OK</button>
+                </div>
+            </Popup>
         </div>
     );
 };

@@ -38,7 +38,7 @@ export const addMockRecords = async () => {
     try {
         const mockEvent1 = {
             input: {
-                timeAndDate: '2023-12-31T12:00:00Z',
+                timeAndDate: '2025-12-31T12:00:00Z',
                 eventName: 'Mock Event 1',
                 eventPoster: 'mock_event1.jpg',
                 place: 'Mock Place 1',
@@ -52,7 +52,7 @@ export const addMockRecords = async () => {
 
         const mockEvent2 = {
             input: {
-                timeAndDate: '2023-12-31T15:00:00Z',
+                timeAndDate: '2025-12-31T15:00:00Z',
                 eventName: 'Mock Event 2',
                 eventPoster: 'mock_event2.jpg',
                 place: 'Mock Place 2',
@@ -94,7 +94,7 @@ export const listMockEvents = async () => {
         const mockEvents = [
             {
                 eventId: '1',
-                timeAndDate: '2023-12-31T12:00:00Z',
+                timeAndDate: '2025-12-31T12:00:00Z',
                 eventName: 'Mock Event 1',
                 eventPoster: 'mock-event-1.jpg',
                 place: 'Mock Venue 1',
@@ -109,7 +109,7 @@ export const listMockEvents = async () => {
             },
             {
                 eventId: '2',
-                timeAndDate: '2023-12-31T15:00:00Z',
+                timeAndDate: '2025-12-31T15:00:00Z',
                 eventName: 'Mock Event 2',
                 eventPoster: 'mock-event-2.jpg',
                 place: 'Mock Venue 2',
