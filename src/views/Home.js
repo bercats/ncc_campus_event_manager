@@ -165,6 +165,7 @@ const Home = () => {
                     eventPlanner: event.eventPlanner,
                     description: event.description,
                     id: event.id,
+                    seatsLeft: event.seatsLeft,
                     createdAt: event.createdAt,
                     updatedAt: getAdmin,
                     __typename: event.__typename}}));
