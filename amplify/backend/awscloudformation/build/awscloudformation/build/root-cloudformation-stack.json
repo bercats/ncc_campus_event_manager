@@ -157,15 +157,6 @@
       "Properties": {
         "TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "Parameters": {
-          "AppSyncApiName": "ncceventplanner",
-          "DynamoDBBillingMode": "PAY_PER_REQUEST",
-          "DynamoDBEnableServerSideEncryption": false,
-          "AuthCognitoUserPoolId": {
-            "Fn::GetAtt": [
-              "authnccauth",
-              "Outputs.UserPoolId"
-            ]
-          },
           "authRoleName": {
             "Ref": "AuthRoleName"
           },
@@ -173,7 +164,7 @@
             "Ref": "UnauthRoleName"
           },
           "S3DeploymentBucket": "amplify-ncceventplanner-dev-02804-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/b6cb1eb827e36bf239918de9bff22f9904fdfd54",
+          "S3DeploymentRootKey": "amplify-appsync-files/87bf8ebe3876ace28e4f37d497404adea048b072",
           "env": "dev"
         }
       }
