@@ -1,5 +1,6 @@
 import React from 'react';
 
+<<<<<<< Updated upstream
 const EventCard = ({ event }) => {
   // Parse numbers from event data
   const parseInteger = (value) => isNaN(parseInt(value)) ? 'N/A' : parseInt(value);
@@ -8,6 +9,9 @@ const EventCard = ({ event }) => {
   const price = event.price || '0';
   const parsedCapacity = parseInt(event.capacity);
   const parsedSeatsLeft = parseInt(event.seatsLeft);
+=======
+const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
+>>>>>>> Stashed changes
   const numTicketsAvailable = event.capacity - event.seatsLeft;
   const isBookable =  numTicketsAvailable > 0;
 
@@ -40,6 +44,7 @@ const EventCard = ({ event }) => {
   }
 
   return (
+<<<<<<< Updated upstream
       <div className="event-card">
         {event.eventPoster && <img src={event.eventPoster} alt="Event" className="event-image" />}
         <div className="event-details">
@@ -62,6 +67,34 @@ const EventCard = ({ event }) => {
                 </button>
             )}
           </div>
+=======
+    <div className="event-card">
+      <img src={event.eventPoster} alt="Event" className="event-image" />
+
+      <div className="event-details">
+        <h2>{event.eventName}</h2>
+        <p className="event-timeAndDate">{getFormattedDate()}</p>
+        <p className="place">{event.place}</p>
+        <p className="event-description">{event.description}</p>
+        <p className="ticket-info">
+          Tickets available: {numTicketsAvailable} (capacity: {event.capacity})
+        </p>
+
+        <div className="event-actions">
+        {isBookable ? (
+          <button className="book-button" onClick={() => bookTicket()}>
+              Book Ticket
+            </button>
+        ) : (
+          <button className="sold-out-button">Sold Out!</button>
+        )}
+          {isAdmin && (
+              <div className="admin-actions">
+                <button onClick={() => onEdit(event)}>Edit</button>
+                <button onClick={() => onDelete(event.id)}>Delete</button>
+              </div>
+          )}
+>>>>>>> Stashed changes
         </div>
       </div>
   );
