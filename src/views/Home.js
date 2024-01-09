@@ -8,7 +8,7 @@ import EventCard from "../ui-components/EventCard";
 import './Home.css';
 import { deleteAllRecords, addMockRecords } from "../mock2.js"
 import { createEvent } from '../graphql/mutations';
-import { EventCreateForm } from '../ui-components';
+import  EventCreator from "../ui-components/EventCreator";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import amplifyconfig from '../amplifyconfiguration.json';
@@ -82,11 +82,11 @@ const Home = () => {
                 return astart - bstart;
             });
 
-            setEvents(events);
+            
             console.log('Updated Events State:', events);
 
-            await getSecureImageUrls();
-
+            events=await getSecureImageUrls(events);
+            setEvents(events);
 
         } catch(err) {
             console.log("Error retrieving events: ", err)
@@ -155,16 +155,16 @@ const Home = () => {
     const toggleEventCreateForm = () => {
         setShowEventCreateForm(!showEventCreateForm);
         
-        return (<EventCreateForm/>);
+        return (<EventCreator/>);
     };
     
     const getSecureImageUrls = async (events) => { // Modify function signature
         const updatedEvents = await Promise.all(
-            events.map(async (event) => {
+            events?.map(async (event) => {
                 event.url = ""; // add the url field to the event
-                if (event.image_file_name) {
+                if (event.eventPoster) {
                     try {
-                        const preSignedImageURL = await Storage.get(event.image_file_name, {
+                        const preSignedImageURL = await Storage.get(event.eventPoster, {
                             level: "protected",               // defaults to `public`
                             identityId: event.student_id,     // id of another user, if `level: protected`
                             download: false,                  // defaults to false
@@ -202,7 +202,7 @@ const Home = () => {
                         
                         <Popup  name="popup" trigger={<button className="button"> Create Event </button>}  modal>
                         <ScrollView maxHeight='700px'>
-                        <EventCreateForm
+                        <EventCreator
                             onSubmit={(fields) => {
                                 // Example function to trim all string inputs
                                 const updatedFields = {}
