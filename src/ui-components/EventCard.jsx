@@ -1,7 +1,9 @@
-import React from 'react';
-
-
+import {EventUpdateForm} from "./index";
+import React, { useState } from 'react';
+import Popup from 'reactjs-popup';
+import {ScrollView} from "@aws-amplify/ui-react";
 const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
+  const [showEditForm, setShowEditForm] = useState(false);
 
   // Parse numbers from event data
   const parseInteger = (value) => isNaN(parseInt(value)) ? 'N/A' : parseInt(value);
@@ -12,7 +14,7 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
   const parsedSeatsLeft = parseInt(event.seatsLeft);
   const numTicketsAvailable = event.capacity - event.seatsLeft;
   const isBookable =  numTicketsAvailable > 0;
-
+  console.log('Editing event:', event);
   function getFormattedDate() {
     const dateString = event.timeAndDate;
     if (!dateString) {
@@ -65,13 +67,42 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
                 </button>
             )}
             {isAdmin && (
-              <div className="admin-actions">
-                <button onClick={() => onEdit(event)}>Edit</button>
-                <button onClick={() => onDelete(event.id)}>Delete</button>
-              </div>
-          )}
+                <div className="card-actions">
+                  <button onClick={() => setShowEditForm(true)}>Edit</button>
+                  <button onClick={() => onDelete(event.id)}>Delete</button>
+                </div>
+            )}
+            {showEditForm && (
+                <Popup
+                    open={showEditForm}
+                    onClose={() => setShowEditForm(false)}
+                    modal
+                    closeOnDocumentClick
+                >
+                  <ScrollView maxHeight="700px">
+                    <div>
+                      <EventUpdateForm
+                          event={event}
+                          onSubmit={(event) => {
+                            // Example function to trim all string inputs
+                            const updatedFields = {}
+                            Object.keys(event).forEach(key => {
+                              if (typeof event[key] === 'string') {
+                                updatedFields[key] = event[key].trim()
+                              } else {
+                                updatedFields[key] = event[key]
+                              }
+                            })
+                            return updatedFields
+                          }}
+                          onClose={() => setShowEditForm(false)}
+                          // Add other props you need to pass to EventUpdateForm
+                      />
+                    </div>
+                  </ScrollView>
+                </Popup>
+            )}
           </div>
-          
         </div>
         <div style={{alignSelf:"right"}}>{event.eventPoster && <img src={event.url} alt="Event" className="event-image" width="300px"/>} 
         </div>
