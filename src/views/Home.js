@@ -1,6 +1,7 @@
 // Home.js
 import React, { useEffect, useState } from 'react';
 import {Amplify, Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
+import { ScrollView } from '@aws-amplify/ui-react';
 import { listEvents} from "../graphql/queries";
 import { listMockEvents } from '../mock';
 import EventCard from "../ui-components/EventCard";
@@ -213,7 +214,8 @@ const Home = () => {
                     <div className="menu-item" onClick={() => toggleEventCreateForm()}>
                         <i className="fas fa-plus"></i>
                         
-                        <Popup name="popup" trigger={<button className="button"> Create Event </button>}  modal>
+                        <Popup  name="popup" trigger={<button className="button"> Create Event </button>}  modal>
+                        <ScrollView maxHeight='700px'>
                         <EventCreateForm
                             onSubmit={(fields) => {
                                 // Example function to trim all string inputs
@@ -228,6 +230,7 @@ const Home = () => {
                                 return updatedFields
                             }}
                         />
+                        </ScrollView>
                         </Popup>
                     </div>)}
             </div>

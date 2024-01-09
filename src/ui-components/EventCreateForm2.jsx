@@ -6,11 +6,10 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField, DropZone, Text, VisuallyHidden, ScrollView} from "@aws-amplify/ui-react";
+import { Button, Flex, Grid, TextField, DropZone, Text, VisuallyHidden } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { API, Storage } from "aws-amplify";
+import { API } from "aws-amplify";
 import { createEvent } from "../graphql/mutations";
-import { Label } from "reactstrap";
 export default function EventCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -34,19 +33,24 @@ export default function EventCreateForm(props) {
     description: "",
     seatsLeft: "",
   };
-const acceptedFileTypes = ['image/png', 'image/jpeg'];
+  const acceptedFileTypes = ['image/png', 'image/jpeg'];
   const [eventId, setEventId] = React.useState(initialValues.eventId);
-  const [timeAndDate, setTimeAndDate] = React.useState(initialValues.timeAndDate);
+  const [timeAndDate, setTimeAndDate] = React.useState(
+    initialValues.timeAndDate
+  );
   const [eventName, setEventName] = React.useState(initialValues.eventName);
-  const [eventPoster, setEventPoster] = React.useState(initialValues.eventPoster);
-  const [files, setFiles] = React.useState([]);
-  const hiddenInput = React.useRef(null);
-  const [imageFile, setImageFile] = React.useState(null);
+  const [eventPoster, setEventPoster] = React.useState(
+    initialValues.eventPoster
+  );
   const [place, setPlace] = React.useState(initialValues.place);
   const [price, setPrice] = React.useState(initialValues.price);
   const [capacity, setCapacity] = React.useState(initialValues.capacity);
-  const [eventPlanner, setEventPlanner] = React.useState(initialValues.eventPlanner);
-  const [description, setDescription] = React.useState(initialValues.description);
+  const [eventPlanner, setEventPlanner] = React.useState(
+    initialValues.eventPlanner
+  );
+  const [description, setDescription] = React.useState(
+    initialValues.description
+  );
   const [seatsLeft, setSeatsLeft] = React.useState(initialValues.seatsLeft);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -60,7 +64,6 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
     setEventPlanner(initialValues.eventPlanner);
     setDescription(initialValues.description);
     setSeatsLeft(initialValues.seatsLeft);
-
     setErrors({});
   };
   const validations = {
@@ -92,20 +95,9 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
     setErrors((errors) => ({ ...errors, [fieldName]: validationResponse }));
     return validationResponse;
   };
+  const [files, setFiles] = React.useState([]);
+  const hiddenInput = React.useRef(null);
 
-  const handleUpload = async (imageFile) => {
-    try {
-      let storageKey = '';
-      const resultKey = await Storage.put(imageFile.name, imageFile, {
-        level: 'protected',
-      });
-      storageKey = resultKey.key; // Adjust according to your Storage API's return structure
-      setEventPoster(storageKey);
-      // Handle successful upload logic here if necessary
-    } catch (error) {
-      console.error('Upload failed:', error);
-    }
-  };
   const onFilePickerChange = (event) => {
     const { files } = event.target;
     if (!files || files.length === 0) {
@@ -318,43 +310,39 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
         hasError={errors.eventName?.hasError}
         {...getOverrideProps(overrides, "eventName")}
       ></TextField>
-      <Label>Event poster</Label>
-      <DropZone
-          label="Event poster"
-          acceptedFileTypes={acceptedFileTypes}
-          onDropComplete={({ acceptedFiles, rejectedFiles }) => {
-          setFiles(acceptedFiles);
-          }}
-      >
-          <Flex direction="column" alignItems="center">
-          <Text>Drag images here or</Text>
-          <Button size="small" onClick={() => hiddenInput.current.click()}>
-              Browse
-          </Button>
-          </Flex>
-          <VisuallyHidden>
-          <input
-              type="file"
-              tabIndex={-1}
-              ref={hiddenInput}
-              onChange={onFilePickerChange}
-              multiple={true}
-              accept={acceptedFileTypes.join(',')}
-          />
-          </VisuallyHidden>
-        </DropZone>
-        {files.map((file) => (
-        <Text key={file.name}>{file.name}</Text>
-        ))}
-      <Button
-            children="Upload Photo"
-            type="submit"
-            variation="primary"
-            onClick={(event) => {
-              event.preventDefault();
-              handleUpload(files[0]);
-            }}
-          ></Button>
+      <TextField
+        label="Event poster"
+        isRequired={false}
+        isReadOnly={false}
+        value={eventPoster}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              eventId,
+              timeAndDate,
+              eventName,
+              eventPoster: value,
+              place,
+              price,
+              capacity,
+              eventPlanner,
+              description,
+              seatsLeft,
+            };
+            const result = onChange(modelFields);
+            value = result?.eventPoster ?? value;
+          }
+          if (errors.eventPoster?.hasError) {
+            runValidationTasks("eventPoster", value);
+          }
+          setEventPoster(value);
+        }}
+        onBlur={() => runValidationTasks("eventPoster", eventPoster)}
+        errorMessage={errors.eventPoster?.errorMessage}
+        hasError={errors.eventPoster?.hasError}
+        {...getOverrideProps(overrides, "eventPoster")}
+      ></TextField>
       <TextField
         label={
           <span style={{ display: "inline-flex" }}>
@@ -500,81 +488,103 @@ const acceptedFileTypes = ['image/png', 'image/jpeg'];
           }
           setEventPlanner(value);
         }}
-        onBlur={() => runValidationTasks("eventPlanner", eventPlanner)}
-        errorMessage={errors.eventPlanner?.errorMessage}
-        hasError={errors.eventPlanner?.hasError}
-        {...getOverrideProps(overrides, "eventPlanner")}
-      ></TextField>
-      <TextField
-        label="Description"
-        isRequired={false}
-        isReadOnly={false}
-        value={description}
-        onChange={(e) => {
-          let { value } = e.target;
-          if (onChange) {
-            const modelFields = {
-              eventId,
-              timeAndDate,
-              eventName,
-              eventPoster,
-              place,
-              price,
-              capacity,
-              eventPlanner,
-              description: value,
-              seatsLeft,
-            };
-            const result = onChange(modelFields);
-            value = result?.description ?? value;
-          }
-          if (errors.description?.hasError) {
-            runValidationTasks("description", value);
-          }
-          setDescription(value);
-        }}
-        onBlur={() => runValidationTasks("description", description)}
-        errorMessage={errors.description?.errorMessage}
-        hasError={errors.description?.hasError}
-        {...getOverrideProps(overrides, "description")}
-      ></TextField>
-      <TextField
-        label="Seats left"
-        isRequired={false}
-        isReadOnly={false}
-        type="number"
-        step="any"
-        value={seatsLeft}
-        onChange={(e) => {
-          let value = isNaN(parseInt(e.target.value))
-            ? e.target.value
-            : parseInt(e.target.value);
-          if (onChange) {
-            const modelFields = {
-              eventId,
-              timeAndDate,
-              eventName,
-              eventPoster,
-              place,
-              price,
-              capacity,
-              eventPlanner,
-              description,
-              seatsLeft: value,
-            };
-            const result = onChange(modelFields);
-            value = result?.seatsLeft ?? value;
-          }
-          if (errors.seatsLeft?.hasError) {
-            runValidationTasks("seatsLeft", value);
-          }
-          setSeatsLeft(value);
-        }}
-        onBlur={() => runValidationTasks("seatsLeft", seatsLeft)}
-        errorMessage={errors.seatsLeft?.errorMessage}
-        hasError={errors.seatsLeft?.hasError}
-        {...getOverrideProps(overrides, "seatsLeft")}
-      ></TextField>
+        ></TextField>
+        <DropZone
+          acceptedFileTypes={acceptedFileTypes}
+          onDropComplete={({ acceptedFiles, rejectedFiles }) => {
+            setFiles(acceptedFiles);
+          }}
+        >
+          <Flex direction="column" alignItems="center">
+            <Text>Drag images here or</Text>
+            <Button size="small" onClick={() => hiddenInput.current.click()}>
+              Browse
+            </Button>
+          </Flex>
+          <VisuallyHidden>
+            <input
+              type="file"
+              tabIndex={-1}
+              ref={hiddenInput}
+              onChange={onFilePickerChange}
+              multiple={true}
+              accept={acceptedFileTypes.join(',')}
+            />
+          </VisuallyHidden>
+        </DropZone>
+      {files.map((file) => (
+        <Text key={file.name}>{file.name}</Text>
+      ))}
+        <TextField
+          label="Description"
+          isRequired={false}
+          isReadOnly={false}
+          value={description}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (onChange) {
+              const modelFields = {
+                eventId,
+                timeAndDate,
+                eventName,
+                eventPoster,
+                place,
+                price,
+                capacity,
+                eventPlanner,
+                description: value,
+                seatsLeft,
+              };
+              const result = onChange(modelFields);
+              value = result?.description ?? value;
+            }
+            if (errors.description?.hasError) {
+              runValidationTasks("description", value);
+            }
+            setDescription(value);
+          }}
+          onBlur={() => runValidationTasks("description", description)}
+          errorMessage={errors.description?.errorMessage}
+          hasError={errors.description?.hasError}
+          {...getOverrideProps(overrides, "description")}
+        ></TextField>
+        <TextField
+          label="Seats left"
+          isRequired={false}
+          isReadOnly={false}
+          type="number"
+          step="any"
+          value={seatsLeft}
+          onChange={(e) => {
+            let value = isNaN(parseInt(e.target.value))
+              ? e.target.value
+              : parseInt(e.target.value);
+            if (onChange) {
+              const modelFields = {
+                eventId,
+                timeAndDate,
+                eventName,
+                eventPoster,
+                place,
+                price,
+                capacity,
+                eventPlanner,
+                description,
+                seatsLeft: value,
+              };
+              const result = onChange(modelFields);
+              value = result?.seatsLeft ?? value;
+            }
+            if (errors.seatsLeft?.hasError) {
+              runValidationTasks("seatsLeft", value);
+            }
+            setSeatsLeft(value);
+          }}
+          onBlur={() => runValidationTasks("seatsLeft", seatsLeft)}
+          errorMessage={errors.seatsLeft?.errorMessage}
+          hasError={errors.seatsLeft?.hasError}
+          {...getOverrideProps(overrides, "seatsLeft")}
+        ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
