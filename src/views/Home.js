@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import {Amplify, Storage, Auth, API, graphqlOperation  } from 'aws-amplify';
 import { ScrollView } from '@aws-amplify/ui-react';
-import { listEvents} from "../graphql/queries";
-import { listMockEvents } from '../mock';
+import {getAdmin, listEvents} from "../graphql/queries";
 import EventCard from "../ui-components/EventCard";
 import './Home.css';
 import { deleteAllRecords, addMockRecords } from "../mock2.js"
-import { createEvent } from '../graphql/mutations';
-import { EventCreateForm } from '../ui-components';
+import {createEvent, deleteEvent, updateEvent} from '../graphql/mutations';
+import {EventCreateForm, EventUpdateForm} from '../ui-components';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import amplifyconfig from '../amplifyconfiguration.json';
@@ -36,6 +35,7 @@ const Home = () => {
     const [adminDialog, setAdminDialog] = useState(false);
     const [events, setEvents] = useState([]);
     const [showEventCreateForm, setShowEventCreateForm] = useState(false);
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
 
     useEffect(() => {
         const checkAdmin = async () => {
@@ -145,16 +145,46 @@ const Home = () => {
     };
 
     const handleAdminDialogProceed = () => {
-        // Add your logic for adminTools
         console.log('Proceeding with adminTools');
-
-        // Call the adminTools function
         adminTools();
+    };
+
+    const editEvent = async (event) => {
+        setShowUpdateForm(!showUpdateForm)
+        try {
+            await API.graphql(graphqlOperation(updateEvent, {input: {eventId: event.eventId,
+                    timeAndDate: event.timeAndDate,
+                    eventName: event.eventName,
+                    eventPoster: event.poster,
+                    place: event.place,
+                    price: event.price,
+                    capacity: event.capacity,
+                    eventPlanner: event.eventPlanner,
+                    description: event.description,
+                    id: event.id,
+                    createdAt: event.createdAt,
+                    updatedAt: getAdmin}}));
+
+            await showAllUpcomingEvents();
+        } catch (err) {
+            console.error('Error deleting event:', err);
+        }
+        return (<EventUpdateForm/>);
+    };
+
+    const ondeleteEvent = async (eventId) => {
+        try {
+            await API.graphql(graphqlOperation(deleteEvent, { input: { id: eventId } }));
+
+            await showAllUpcomingEvents();
+        } catch (err) {
+            console.error('Error deleting event:', err);
+        }
     };
 
     const toggleEventCreateForm = () => {
         setShowEventCreateForm(!showEventCreateForm);
-        
+
         return (<EventCreateForm/>);
     };
     
@@ -229,12 +259,15 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="main-container">
-                    {/* This is where events will appear */}
-                    {events.map(event => (
-                        <div key={event.id}>
-                            <EventCard event={event} />
+                    {events.map((event) => (
+                        <div key={event.id} className="event-card-container">
+                            <EventCard
+                                event={event}
+                                isAdmin={isAdmin}
+                                onEdit={(event) => editEvent(event)}
+                                onDelete={(id) => ondeleteEvent(id)}
+                            />
                         </div>
-
                     ))}
                 </div>
             </div>
