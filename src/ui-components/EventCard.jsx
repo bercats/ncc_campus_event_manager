@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
 
   // Parse numbers from event data
@@ -69,7 +70,7 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
               </div>
           )}
           </div>
-
+          
         </div>
       </div>
   );
