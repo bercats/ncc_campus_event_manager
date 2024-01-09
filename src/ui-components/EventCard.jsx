@@ -1,6 +1,8 @@
 import React from 'react';
 
-const EventCard = ({ event }) => {
+
+const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
+
   // Parse numbers from event data
   const parseInteger = (value) => isNaN(parseInt(value)) ? 'N/A' : parseInt(value);
 
@@ -61,7 +63,14 @@ const EventCard = ({ event }) => {
                   Sold Out!
                 </button>
             )}
+            {isAdmin && (
+              <div className="admin-actions">
+                <button onClick={() => onEdit(event)}>Edit</button>
+                <button onClick={() => onDelete(event.id)}>Delete</button>
+              </div>
+          )}
           </div>
+          
         </div>
       </div>
   );
