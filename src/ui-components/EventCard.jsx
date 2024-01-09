@@ -55,8 +55,7 @@ const EventCard = ({ event, isAdmin, onEdit, onDelete  }) => {
           <p className="ticket-info">
             Capacity: {parsedCapacity}
           </p>
-          <span className="event-price">{event.price || 'Free'}</span>
-          <p className="seats">{event.seatsLeft || 'No seats available'}</p>
+          <p className="event-price">Price: {event.price || 'Free'}</p>
           <div className="event-actions">
             {isAdmin && (
                 <div className="card-actions">

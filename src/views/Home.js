@@ -271,7 +271,6 @@ const Home = () => {
                                 onEdit={(event) => editEvent(event)}
                                 onDelete={(id) => ondeleteEvent(id)}
                             />
-                            <p className="event-card-seats-left">Seats Left: {event.seatsLeft}</p>
                         </div>
                     ))}
                 </div>
