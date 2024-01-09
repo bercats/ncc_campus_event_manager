@@ -42,11 +42,7 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-<<<<<<< Updated upstream
       "lastPushTimeStamp": "2024-01-07T21:22:40.937Z",
-=======
-      "lastPushTimeStamp": "2024-01-08T20:34:33.632Z",
->>>>>>> Stashed changes
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apincceventplanner"
@@ -92,11 +88,7 @@
         "IdentityPoolName": "nccauthIdentityPool__dev",
         "UserPoolName": "nccauthUserPool"
       },
-<<<<<<< Updated upstream
       "lastPushTimeStamp": "2024-01-07T21:22:40.941Z",
-=======
-      "lastPushTimeStamp": "2024-01-08T20:34:33.641Z",
->>>>>>> Stashed changes
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/nccauth-cloudformation-template.json",
         "logicalId": "authnccauth"
@@ -120,11 +112,7 @@
       "output": {
         "adminsGroupRole": "arn:aws:iam::933555619685:role/us-east-1_sGpLq2jA5-adminsGroupRole"
       },
-<<<<<<< Updated upstream
       "lastPushTimeStamp": "2024-01-07T21:22:45.787Z",
-=======
-      "lastPushTimeStamp": "2024-01-08T20:34:37.557Z",
->>>>>>> Stashed changes
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
         "logicalId": "authuserPoolGroups"
@@ -140,11 +128,7 @@
         "BucketName": "myeventplannerbucket02804-dev",
         "Region": "us-east-1"
       },
-<<<<<<< Updated upstream
       "lastPushTimeStamp": "2024-01-07T21:22:45.845Z",
-=======
-      "lastPushTimeStamp": "2024-01-08T20:34:37.689Z",
->>>>>>> Stashed changes
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-ncceventplanner-dev-02804-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageEventImages"

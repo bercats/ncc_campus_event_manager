@@ -152,20 +152,6 @@ const Home = () => {
         adminTools();
     };
 
-    const editEvent = (event) => {
-        console.log('Editing event:', event);
-    };
-
-    const deleteEvent = async (eventId) => {
-        try {
-            await API.graphql(graphqlOperation(deleteEvent, { input: { id: eventId } }));
-
-            await showAllUpcomingEvents();
-        } catch (err) {
-            console.error('Error deleting event:', err);
-        }
-    };
-
     const toggleEventCreateForm = () => {
         setShowEventCreateForm(!showEventCreateForm);
         
@@ -243,18 +229,24 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="main-container">
+                    {/* This is where events will appear */}
                     {events.map(event => (
-                        <div key={event.id} className="event-card-container">
-                            <EventCard
-                                event={event}
-                                isAdmin={isAdmin}
-                                onEdit={(event) => editEvent(event)}
-                                onDelete={(eventId) => deleteEvent(eventId)}/>
+                        <div key={event.id}>
+                            <EventCard event={event} />
                         </div>
 
                     ))}
                 </div>
             </div>
+
+            {/* Admin Dialog */}
+            {adminDialog && (
+                <div className="admin-dialog">
+                    <p>Warning: This command will delete ALL the data in the database, and then add some mock (fake) data.</p>
+                    <button onClick={handleAdminDialogProceed}>Proceed</button>
+                    <button onClick={handleAdminDialogClose}>Cancel</button>
+                </div>
+            )}
         </div>
     );
 };
